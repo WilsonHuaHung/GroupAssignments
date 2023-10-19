@@ -1,0 +1,42 @@
+# Assignment 4 2D Animation- Project Description
+
+## Animation Summary
+
+Our animation project for Assignment 4 was focused on creating a dynamic scene with various animated objects, including shurikens, kunais, and spinning swords, set against a colorful backdrop of grass and a changing sky. The animation aimed to showcase the movement and interaction of these objects using Processing.
+
+## Included Classes
+
+### Shuriken
+
+The `Shuriken` class represents a spinning star-shaped object. It moves randomly across the canvas, bouncing off the screen edges. The rotation and scale of the shuriken change dynamically to create a spinning effect. The shuriken can have different colors.
+
+### Kunai
+
+The `Kunai` class represents small throwing knives. Similar to shurikens, kunais move randomly, and their position is updated continuously. The user can customize their colors.
+
+### Sword
+
+The `Sword` class represents spinning swords that move across the screen in random directions. These swords rotate as they move and change scale. The user can specify the sword's color.
+
+### Background
+
+The background class creates a colorful backdrop, simulating a changing sky and grass. It provides a dynamic and visually appealing environment for the animated objects.
+
+## Unexpected Challenges
+
+1. **Synchronization of Movements**: Ensuring that all objects moved and interacted smoothly in the animation required careful synchronization and adjusting the movement parameters.
+
+2. **Randomization**: Implementing random movement and rotation while avoiding sudden jerks or excessive rotations was challenging. 
+
+3. **Color Customization**: Allowing users to customize the color of each object class required additional code for color handling.
+
+## Division of Work
+
+-Ginger: Implemented the `Sword` class and background animations.
+
+-Wilson: Implemented the main file and "Shuriken" class. Made adjustments when needed.
+
+-Michael: Implemented the 'kunai' class and made adjustments to the main .pde file
+
+Each group member was responsible for their assigned class and contributed to resolving unexpected challenges collectively.
+
