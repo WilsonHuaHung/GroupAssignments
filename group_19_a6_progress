@@ -1,0 +1,32 @@
+Project Progress Report
+
+Project Title: Simulation of Fire, Water, and Wind Particles
+
+Date: October 20th, 2023
+
+Team Members:
+- Wilson Hua
+- [Team Member 2]
+- [Team Member 3]
+
+Idea:
+- Created particle classes for Fire, Water, and Wind.
+- Customized appearance and behavior for each particle type.
+- Implemented forces to achieve specific behaviors.
+- Particle System
+
+Plan:
+- Create a ParticleSystem class to manage different particle types.
+- Implemente the addition of particles based on user input.
+- Add the ability to switch between particle types (1 for Fire, 2 for Water, 3 for Wind). Each member will be responsible for completing one of the particle types.
+- Implement interactivity, such as the ability to control the simulation with user input (e.g., mouse or keyboard).
+
+Simulation Techniques:
+- Fire Particles: The fire particles will have a flame-like appearance and behavior. They will move upwards, flicker, and create a dynamic fiery effect.
+- Water Particles: The water particles will simulate the effect of gravity. They will flow downward, forming droplets with a realistic water-like appearance.
+- Wind Particles: The wind particles will exhibit a swirly and fast-moving behavior. They will move in all directions, creating a curvy and string-like appearance.
+
+Interactive Functionality:
+- Particle Selection: Users can switch between different particle types using the keyboard. Pressing "1" will select Fire, "2" for Water, and "3" for Wind.
+- Mouse Interaction: Users can interact with the simulation using the mouse. For instance, they can click the mouse to add bursts of particles of the selected type where the mouse pointer is located.
+- Optional Features: For extra credit, consider adding further interactivity, such as adjusting particle parameters using sliders or other controls.
