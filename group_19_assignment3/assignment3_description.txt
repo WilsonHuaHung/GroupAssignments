@@ -1,0 +1,40 @@
+Project Summary:
+
+This project aims to explore words in novels and visualize a text using various techniques in Processing. The primary focus is on extracting and processing word data from a Project Gutenberg file and then using this data to create visualizations. 
+
+Functionalities Implemented:
+
+extract_words.py: This Python script extracts all words from the chosen novel, converts them to lowercase, and removes non-alphabetic characters using regular expressions. It generates three text files:
+
+	allwords.txt: Contains all words in the novel (including duplicates) in lowercase without punctuation.
+	uniquewords.txt: Contains unique words in the novel (words that appear only once).
+	wordfrequency.txt: Maps word frequencies to the number of words with that frequency.
+
+Online Word Cloud: Use the allwords.txt file to create a word cloud using Word Clouds software. Then you can customize the appearance, including colors and fonts, and save it as novelname_wordcloud.png.
+
+a3_novelvisualization: A Processing file that generates a word cloud based on the contents of uniquewords.txt. It allows customization of font, font size, and colors for the word cloud. Our selection of red is in line with the theme of Dracula as it represents blood. The font is Bonello-Regular, and we chose this because it reminded us of Dracula-themed movies, with the slight curls to the letters.
+
+a3_wordfrequency: Another Processing file that visualizes the relationship between word frequency and the number of words with those frequencies using data from wordfrequency.txt. The specific visualization method is a pie chart with red hue colors assigned to each element of the bar chart. 
+
+Other Interesting Features:
+
+Data Analysis: By examining word frequencies, the project provides insights into the language and style used in the novel. The bar chart 
+Customization: The project allows for creative customization of word clouds, fonts, colors, and word selection in visualizations by being scalable to any txt file that is imputed to the extract_words.py file.
+
+Software Dependencies:
+
+Python: The project relies on Python for the extract_words.py script, which uses regular expressions (re) for text processing. It also uses the collections and shutil libraries for file management.
+Word Clouds Software: We used this software for generating word clouds from the allwords.txt file.
+Processing: The project uses Processing for creating visualizations in a3_novelvisualization and a3_wordfrequency.
+
+Issues:
+
+When working on the word frequency visual, we started with a bar graph but discovered the visibilty of the frequencies was difficult to read so we decided to use a pie chart instead.
+
+Group Participation:
+
+Michael: Created assignment3_description.txt and README.md, and made code adjustments to a3_novelvisualization.pde and a3_wordfrequency.pde to enhance readability and add more functionality.
+
+Wislon: Made GitHub repository for the group to collaborate, contributed to extract_words (produces uniquewords.txt, wordfrequency.txt, and allwords.txt), created functionality to a3_wordfrequency, a3_novelvisualization, and produced novelname_wordcloud by uploading allwords.txt to WorldCloud
+
+Ginger: Divided a3_novelvisualization into classes and functions, added mousepress features for new randomized word cloud, red hue word randomization, and storing of previous screen words. Created a pie chart in as_wordfrequency that uses an arc that uses angle degrees correlated to word frequency value and assigned randomized red hues to represent each frequency 
