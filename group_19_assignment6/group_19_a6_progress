@@ -19,6 +19,9 @@ Plan:
 - Create a ParticleSystem class to manage different particle types.
 - Implemente the addition of particles based on user input.
 - Add the ability to switch between particle types (1 for Fire, 2 for Water, 3 for Wind). Each member will be responsible for completing one of the particle types.
+	- Wilson [Water Class]
+	- Michael [fire or wind]
+	- Ginger [fire or wind]
 - Implement interactivity, such as the ability to control the simulation with user input (e.g., mouse or keyboard).
 
 Simulation Techniques:
