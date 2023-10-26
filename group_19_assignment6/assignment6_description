@@ -15,7 +15,7 @@ The "Particle Simulation of Fire, Water, and Wind" is an interactive simulation 
 
 - `Water.pde`: The Water particle class represents particles with water-like behavior. Wilson worked on this class, creating the visual appearance and gravity-like motion.
 
-- `Wind.pde`: Wind particles are managed in this class. Michael designed the behavior of Wind particles, including their swirly, string-like movement and appearance.
+- `Wind.pde`: Wind particles are managed in this class. Michael designed the behavior of Wind particles, including their string-like movement and appearance.
 
 - `ParticleSystem.pde`: This class manages the addition and display of particles based on user interaction. All team members contributed to this class, ensuring seamless integration with particle classes.
 
