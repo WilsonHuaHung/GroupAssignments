@@ -42,7 +42,7 @@ You can consider implementing additional interactive features for extra credit:
 - `ParticleSystem.pde`: Class to manage different particle types.
 
 ## Known Issues
-- [List any known issues or limitations of the simulation, if any.]
+- none
 
 ## Author
 - Wilson Hua
