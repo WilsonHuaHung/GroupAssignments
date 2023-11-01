@@ -1,7 +1,6 @@
-// Wind.pde
 class Wind extends Particle {
-  float[] trailX = new float[10];
-  float[] trailY = new float[10];
+  float[] trailX = new float[60]; // Increase trail length
+  float[] trailY = new float[60]; // Increase trail length
   int trailIndex = 0;
 
   Wind(float x, float y, float z) {
@@ -17,8 +16,13 @@ class Wind extends Particle {
   }
 
   void update() {
-    // Custom update for wind: Create a curvy, string-like motion
+    // Custom update for wind: Create a swirling, string-like motion
     velocity.add(acceleration);
+
+    // Introduce rotation for a swirling effect
+    PVector rotation = new PVector(0, 0, 0.02); // Adjust the rotation speed
+    velocity.add(rotation);
+
     position.add(velocity);
     acceleration.mult(0); // Reset acceleration
 
@@ -34,7 +38,7 @@ class Wind extends Particle {
     fill(192, 192, 192); // Grey
     noStroke();
 
-    // Create a string-like and curvy appearance
+    // Create a swirling, string-like appearance
     beginShape();
     for (int i = 0; i < trailX.length; i++) {
       float x = trailX[i];

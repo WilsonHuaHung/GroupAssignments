@@ -1,0 +1,36 @@
+# Assignment 6 - Particle Simulation Description
+
+## Project Summary
+The "Particle Simulation of Fire, Water, and Wind" is an interactive simulation project that showcases the dynamic behavior of three distinct particle types: Fire, Water, and Wind. Each particle type has unique visual characteristics and motion behaviors. Users can switch between these particle types and interact with the simulation by adding bursts of particles using the mouse.
+
+## Classes and Contributions
+
+### Main Features
+
+- `Main.pde`: This main sketch file handles the setup, drawing, and user interaction. It was developed collaboratively by the entire team.
+  
+- `Particle.pde`: This base class defines common properties and methods for all particle types. Each group member contributed to the design and behavior of this class.
+
+- `Fire.pde`: The Fire particle class is responsible for simulating the fiery behavior. It was implemented by Ginger and includes customized forces and appearance for the Fire particles.
+
+- `Water.pde`: The Water particle class represents particles with water-like behavior. Wilson worked on this class, creating the visual appearance and gravity-like motion.
+
+- `Wind.pde`: Wind particles are managed in this class. Michael designed the behavior of Wind particles, including their string-like movement and appearance.
+
+- `ParticleSystem.pde`: This class manages the addition and display of particles based on user interaction. All team members contributed to this class, ensuring seamless integration with particle classes.
+
+### Interactivity
+
+- User interaction with the simulation, including particle selection and addition, was primarily implemented in the `Main.pde` sketch, with each team member contributing to different parts of the interactive functionality.
+
+### Optional Features
+
+- Optional features, such as advanced interactivity or animation artifacts, are still under consideration for implementation by the entire team.
+
+## Challenges
+
+While working on this project, we faced a few unexpected challenges:
+
+  - Inconsistent Behavior: The particles may not behave exactly as expected due to the complexity of forces and interactions.
+  - Optimization: Ensuring that the simulation can handle a large number of particles without significant performance degradation is a challenge.
+  - Advanced Features: Implementing optional features for extra credit may introduce complexities and unexpected issues.
