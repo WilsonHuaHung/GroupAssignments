@@ -3,7 +3,7 @@
 
 **Team Members:**
 - Wilson Hua
-- [Team Member 2]
+- Michael Crosson
 - [Team Member 3]
 
 ### Idea
@@ -14,7 +14,7 @@
 - We have established the foundation of our game, including player and enemy objects, basic player controls, and collision detection.
 - Our plan is to further develop the game by adding more enemy types, improving visual elements, and refining the scoring system. Each team member has specific responsibilities, as outlined below:
     - Wilson Hua: Implement Water and Wind enemies.
-    - [Team Member 2]: Implement additional game features (e.g., power-ups or special abilities).
+    - Michael Crosson: Implement additional game features (e.g., power-ups or special abilities).
     - [Team Member 3]: Enhance the game's visual display and create a user-friendly GUI.
 - We will collaborate and integrate our individual components to create a cohesive game.
 
@@ -37,7 +37,7 @@
 ### Responsibilities
 - Each team member is responsible for specific aspects of the project:
     - Wilson Hua: Implementing Water and Wind enemies and their behaviors.
-    - [Team Member 2]: Developing additional game features to enhance gameplay.
+    - Michael Crosson: Developing additional game features such as powerups 
     - [Team Member 3]: Improving the game's visual display and creating a user-friendly GUI.
 - We are coordinating efforts to ensure a smooth integration of our components.
 
