@@ -1,39 +1,69 @@
 Player player;
-ArrayList<Enemy> enemies;
+ArrayList<FireEnemy> fireEnemies;
+ArrayList<WaterEnemy> waterEnemies;
 int score;
 boolean gameOver;
 
 void setup() {
   size(400, 400);
   player = new Player();
-  enemies = new ArrayList<Enemy>();
+  fireEnemies = new ArrayList<FireEnemy>();
+  waterEnemies = new ArrayList<WaterEnemy>();
   score = 0;
   gameOver = false;
 }
 
 void draw() {
   background(220);
-  
+
   if (!gameOver) {
     player.update();
     player.display();
-    
-    // Update and display enemies
-    for (int i = enemies.size() - 1; i >= 0; i--) {
-      Enemy enemy = enemies.get(i);
-      enemy.update();
-      enemy.display();
-      
-      if (player.hits(enemy)) {
-        gameOver = true;
-      }
-      
-      if (enemy.offscreen()) {
-        enemies.remove(i);
+
+    // Create and display Fire enemies
+    if (frameCount % 90 == 0) {
+      fireEnemies.add(new FireEnemy());
+    }
+    for (int i = fireEnemies.size() - 1; i >= 0; i--) {
+      FireEnemy fireEnemy = fireEnemies.get(i);
+      fireEnemy.update();
+      fireEnemy.display();
+      if (fireEnemy.offscreen()) {
+        fireEnemies.remove(i);
         score++;
       }
     }
-    
+
+    // Create and display Water enemies
+    if (frameCount % 75 == 0) {
+      waterEnemies.add(new WaterEnemy());
+    }
+    for (int i = waterEnemies.size() - 1; i >= 0; i--) {
+      WaterEnemy waterEnemy = waterEnemies.get(i);
+      waterEnemy.update();
+      waterEnemy.display();
+      if (waterEnemy.offscreen()) {
+        waterEnemies.remove(i);
+        score++;
+      }
+
+      // Check for collisions with Fire enemies
+      for (int j = fireEnemies.size() - 1; j >= 0; j--) {
+        FireEnemy fireEnemy = fireEnemies.get(j);
+        if (player.hits(fireEnemy)) {
+          gameOver = true;
+        }
+      }
+      
+      // Check for collisions with Water enemies
+      for (int j = waterEnemies.size() - 1; j >= 0; j--) {
+        if (player.hits(waterEnemy)) {
+          // Water enemy hit logic already handled in the Player class
+        }
+      }
+
+    }
+
     // Display score
     fill(0);
     textSize(16);
@@ -42,17 +72,21 @@ void draw() {
     // Game over screen
     fill(0);
     textSize(32);
-    text("Game Over", width/2 - 100, height/2 - 16);
+    text("Game Over", width / 2 - 100, height / 2 - 16);
     textSize(20);
-    text("Final Score: " + score, width/2 - 50, height/2 + 20);
+    text("Final Score: " + score, width / 2 - 50, height / 2 + 20);
   }
 }
 
 void keyPressed() {
   if (key == 'a' || key == 'A') {
-    player.move(-1);
+    player.move(-1, 0);
   } else if (key == 'd' || key == 'D') {
-    player.move(1);
+    player.move(1, 0);
+  } else if (key == 'w' || key == 'W') {
+    player.move(0, -1);
+  } else if (key == 's' || key == 'S') {
+    player.move(0, 1);
   }
 }
 
@@ -60,7 +94,8 @@ void mousePressed() {
   if (gameOver) {
     // Restart the game
     player = new Player();
-    enemies.clear();
+    fireEnemies.clear();
+    waterEnemies.clear();
     score = 0;
     gameOver = false;
   }
