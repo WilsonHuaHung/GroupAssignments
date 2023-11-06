@@ -1,6 +1,7 @@
 Player player;
 ArrayList<FireEnemy> fireEnemies;
 ArrayList<WaterEnemy> waterEnemies;
+ArrayList<Powerup> powerups;
 int score;
 boolean gameOver;
 
@@ -9,6 +10,7 @@ void setup() {
   player = new Player();
   fireEnemies = new ArrayList<FireEnemy>();
   waterEnemies = new ArrayList<WaterEnemy>();
+  powerups = new ArrayList<Powerup>();
   score = 0;
   gameOver = false;
 }
@@ -46,14 +48,6 @@ void draw() {
         waterEnemies.remove(i);
         score++;
       }
-
-      // Check for collisions with Fire enemies
-      for (int j = fireEnemies.size() - 1; j >= 0; j--) {
-        FireEnemy fireEnemy = fireEnemies.get(j);
-        if (player.hits(fireEnemy)) {
-          gameOver = true;
-        }
-      }
       
       // Check for collisions with Water enemies
       for (int j = waterEnemies.size() - 1; j >= 0; j--) {
@@ -61,7 +55,33 @@ void draw() {
           // Water enemy hit logic already handled in the Player class
         }
       }
+    }
 
+    // Check for collisions with Fire enemies
+    for (int i = fireEnemies.size() - 1; i >= 0; i--) {
+      FireEnemy fireEnemy = fireEnemies.get(i);
+      if (player.hits(fireEnemy)) {
+        gameOver = true;
+      }
+    }
+
+    // Create and display Powerups
+    if (frameCount % 100 == 0) {
+      powerups.add(new Powerup());
+    }
+    for (int i = powerups.size() - 1; i >= 0; i--) {
+      Powerup powerup = powerups.get(i);
+      powerup.update();
+      powerup.display();
+      if (powerup.offscreen()) {
+        powerups.remove(i);
+        score--;
+      }
+
+      // Check for collisions with powerups
+      if (player.hits(powerup)) {
+        // Handle powerup collision logic here
+      }
     }
 
     // Display score
@@ -96,6 +116,7 @@ void mousePressed() {
     player = new Player();
     fireEnemies.clear();
     waterEnemies.clear();
+    powerups.clear(); // Clear powerups when restarting
     score = 0;
     gameOver = false;
   }
