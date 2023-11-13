@@ -1,0 +1,45 @@
+# Assignment 7 - Element Run Game
+
+## Group Members
+
+- Ginger Hudson
+Worked on the loading game screen, lives counter, background and text visuals and the game over screen. 
+Enhanced the game's visual display and create a user-friendly GUI
+
+- Michael Crosson
+Implemented additional game features (e.g., power-ups or special abilities).
+
+- Wilson Hua
+Implemented Water and Wind enemies and collision mechanics
+## Project Description
+
+### Game Functionality
+The game loads with a starting screen that by pressing any button the game will load. Once loaded, your player starts and you have three lives to play before the game is over.
+
+### Rules of Play
+Players control the character by using the
+Movement: 
+W or w: Move up 
+A or a: Move left 
+S or s: Move down 
+D or d: Move right
+
+If you collide with a water enemy your player will increase in size. If you collide with an green triangle powerup your player will decrease in size but regain more powerups. If you collide with a fire enemy you will lose one live. You can collect power-ups by surviving as long as possible and interacting with the powerups with points earned for avoiding enemies.
+
+### Win and Lose Conditions
+
+Players win by surviving as long as possible and accumulating the highest score. Losing occurs when the player runs out of lives from colliding with fire enemies.
+
+## Classes
+Enemy: updates and displays the enemies
+FireEnemy: creates the red randomized circles on screen 
+WaterEnemy: creates the blue randomized circles on screen.
+Powerup: create the green triangle to collid with for powerup points
+
+Player: creates the player for game play 
+### Unexpected Challenges
+
+There was challenges encounted in fine-tuning the collision detection and ensuring smooth enemy generation. Debugging and refining the movement of enemies were crucial to enhancing the overall gaming experience.
+In addition, the lives counter that worked in hadn with collision detection to determine when the game ended.
+
+
