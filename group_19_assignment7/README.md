@@ -25,6 +25,7 @@ The player starts with three lives.
 Colliding with water enemies decrements lives.
 Colliding with fire enemies increments the score.
 Collecting power-ups decrements the score.
+
 Enemies:
 
 Water enemies move vertically.
