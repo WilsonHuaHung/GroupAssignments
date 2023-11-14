@@ -9,6 +9,7 @@ class Player {
   int level; // Player level
   String selectedElement; // Selected element
   boolean elementSelected; // Flag to track if the element is selected
+  ArrayList<Projectile> projectiles;
 
   Player() {
     x = width / 2;
@@ -21,6 +22,7 @@ class Player {
     level = 1; // Start at level 1
     selectedElement = "";
     elementSelected = false;
+    projectiles = new ArrayList<>(); // Initialize the projectiles list
   }
 
   void update() {
@@ -28,14 +30,34 @@ class Player {
     // ...
 
     // Check for level up
-    if (score >= 10 && level == 1) {
-      levelUp();
-    } else if (score >= 20 && level == 2) {
-      levelUp();
-      // Pause the game and show element selection menu at level 2
-      // Set elementSelected and selectedElement based on user input
-    } else if (score >= 30 && level == 3) {
-      levelUp();
+    if (score >= 10 && player.level == 1) {
+      player.levelUp();
+    } else if (score >= 20 && player.level == 2) {
+      player.levelUp();
+    } else if (score >= 30 && player.level == 3) {
+      player.levelUp();
+    }
+
+    // Update projectiles
+    for (int i = projectiles.size() - 1; i >= 0; i--) {
+      Projectile projectile = projectiles.get(i);
+      projectile.update();
+
+      // Check for projectile collisions with enemies
+      for (int j = fireEnemies.size() - 1; j >= 0; j--) {
+        if (projectile.hits(fireEnemies.get(j))) {
+          fireEnemies.remove(j);
+          projectiles.remove(i);
+          score++;
+        }
+      }
+      for (int j = waterEnemies.size() - 1; j >= 0; j--) {
+        if (projectile.hits(waterEnemies.get(j))) {
+          waterEnemies.remove(j);
+          projectiles.remove(i);
+          score++;
+        }
+      }
     }
   }
 
@@ -47,6 +69,11 @@ class Player {
     // Display shield animation at level 3
     if (level == 3) {
       displayShield();
+    }
+
+    // Display projectiles
+    for (Projectile projectile : projectiles) {
+      projectile.display();
     }
   }
 
@@ -88,9 +115,25 @@ class Player {
 
   void levelUp() {
     level++;
-    // Implement level up logic here
-    // Pause the game, show level up message, etc.
-    // ...
+
+    // Pause the game (you might want to add a variable to control the game state)
+    gamePaused = true;
+
+    // Show level up message
+    fill(255);
+    textSize(32);
+    String levelUpText = "Level Up!";
+    text(levelUpText, width / 2 - textWidth(levelUpText) / 2, height / 2 - 16);
+
+    // ... Additional logic for level up message
+
+    // Display element selection menu
+    displayElementSelectionMenu();
+
+    // Resume the game after displaying the element selection menu
+    gamePaused = false;
+
+    inElementSelection = true;
   }
 
   void displayShield() {
@@ -107,6 +150,58 @@ class Player {
     } else if (selectedElement.equals("air")) {
       // Air shield animation
       // ...
+    }
+  }
+
+  boolean elementSelectionMenuActive = false;
+
+  void displayElementSelectionMenu() {
+    if (level == 2 && !elementSelected) {
+      // Display element selection menu
+      background(200);  // Example background for the menu
+      fill(0);
+      textSize(20);
+      text("Select your element:", width / 2 - 100, height / 2 - 30);
+      text("1. Fire", width / 2 - 100, height / 2);
+      text("2. Water", width / 2 - 100, height / 2 + 30);
+      text("3. Earth", width / 2 - 100, height / 2 + 60);
+      text("4. Air", width / 2 - 100, height / 2 + 90);
+      elementSelectionMenuActive = true;
+    } else {
+      elementSelectionMenuActive = false;
+    }
+  }
+
+  void handleElementSelection(char key) {
+    // Check the user's input and set the selectedElement accordingly
+    if (key == '1') {
+      selectedElement = "fire";
+      elementSelected = true;
+    } else if (key == '2') {
+      selectedElement = "water";
+      elementSelected = true;
+    } else if (key == '3') {
+      selectedElement = "earth";
+      elementSelected = true;
+    } else if (key == '4') {
+      selectedElement = "air";
+      elementSelected = true;
+    }
+  }
+
+  void shootProjectile() {
+    // Check if an element is selected
+    if (elementSelected) {
+      // Create a new projectile based on the selected element
+      if (selectedElement.equals("fire")) {
+        projectiles.add(new FireProjectile(x, y));
+      } else if (selectedElement.equals("water")) {
+        projectiles.add(new WaterProjectile(x, y));
+      } else if (selectedElement.equals("earth")) {
+        projectiles.add(new EarthProjectile(x, y));
+      } else if (selectedElement.equals("air")) {
+        projectiles.add(new AirProjectile(x, y));
+      }
     }
   }
 }

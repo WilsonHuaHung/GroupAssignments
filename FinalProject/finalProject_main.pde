@@ -2,11 +2,14 @@ Player player;
 ArrayList<FireEnemy> fireEnemies;
 ArrayList<WaterEnemy> waterEnemies;
 ArrayList<Powerup> powerups;
+ArrayList<Projectile> projectiles;
 int score;
 int lives;
 boolean gameOver;
 boolean gameStarted;  // New variable to track whether the game has started
 PImage backgroundImage;
+boolean gamePaused = false;
+boolean inElementSelection = false;
 
 void setup() {
   size(400, 400);
@@ -15,6 +18,7 @@ void setup() {
   fireEnemies = new ArrayList<FireEnemy>();
   waterEnemies = new ArrayList<WaterEnemy>();
   powerups = new ArrayList<Powerup>();
+  projectiles = new ArrayList<Projectile>();
   score = 0;
   lives = 3;
   gameOver = false;
@@ -31,7 +35,7 @@ void draw() {
   if (!gameStarted) {
     // Display the startup screen
     displayStartupScreen();
-  } else if (!gameOver) {
+  } else if (!gameOver && !gamePaused) {
     // Display the game screen
     image(backgroundImage, 0, 0, width, height);
 
@@ -51,7 +55,7 @@ void draw() {
         score++;
       }
     }
-
+    
     // Create and display Water enemies
     if (frameCount % 75 == 0) {
       waterEnemies.add(new WaterEnemy());
@@ -105,6 +109,30 @@ void draw() {
         // Handle powerup collision logic here
       }
     }
+
+    // Update and display projectiles
+    for (int i = projectiles.size() - 1; i >= 0; i--) {
+      Projectile projectile = projectiles.get(i);
+      projectile.update();
+      projectile.display();
+
+      // Check for collisions with enemies
+      for (int j = fireEnemies.size() - 1; j >= 0; j--) {
+        if (projectile.hits(fireEnemies.get(j))) {
+          fireEnemies.remove(j);
+          projectiles.remove(i);
+          score++;
+        }
+      }
+      for (int j = waterEnemies.size() - 1; j >= 0; j--) {
+        if (projectile.hits(waterEnemies.get(j))) {
+          waterEnemies.remove(j);
+          projectiles.remove(i);
+          score++;
+        }
+      }
+    }
+
     //background rect
     fill(255, 0, 0); 
     rect(8, 8, 120, 30);
@@ -114,6 +142,38 @@ void draw() {
     textSize(24);
     text("Score: " + score, 20, 30);
     text("Lives: " + lives, width - 120, 30);
+    
+    player.displayElementSelectionMenu();
+
+    if (player.elementSelectionMenuActive) {
+      // Element selection menu is active
+      return;  
+    }
+
+    // Check if the element is selected
+    if (player.elementSelected) {
+      // Handle element selection
+      player.handleElementSelection(key);
+    }
+
+    // Display projectiles
+    for (Projectile projectile : player.projectiles) {
+      projectile.display();
+    }
+    
+    // Display projectiles at level 2
+    if (player.level == 2 && !player.elementSelected) {
+      player.displayElementSelectionMenu();
+    } else if (player.level == 2 && player.elementSelected) {
+      // Display projectiles
+      for (Projectile projectile : player.projectiles) {
+        projectile.display();
+      }
+    } else if (player.level == 3) {
+      // Display shield animation
+      player.displayShield();
+    }
+    
   } else if (gameOver) {
     // All-black screen when the game is over
     background(0);  // Set the background to black
@@ -137,7 +197,17 @@ void keyPressed() {
     // Start the game when any key is pressed
     gameStarted = true;
     initializeGame();
-  } else if (!gameOver) {
+  } else if (!gameOver && key == ' ') {
+    // Toggle game pause on spacebar press during the game
+    gamePaused = !gamePaused;
+    if (gamePaused) {
+      // Pause the game
+      noLoop();
+    } else {
+      // Resume the game
+      loop();
+    }
+  } else if (!gameOver && !gamePaused) {
     // Handle player movement during the game
     if (key == 'a' || key == 'A') {
       player.move(-1, 0);
@@ -147,10 +217,23 @@ void keyPressed() {
       player.move(0, -1);
     } else if (key == 's' || key == 'S') {
       player.move(0, 1);
+    } else if (player.level == 2 && !player.elementSelected) {
+      // Element selection menu at level 2
+      handleElementSelection(key);
+    } else if (key == ' ' && player.level >= 2) {
+      // Handle shooting projectiles
+      player.shootProjectile();
     }
   }
+  if (inElementSelection) {
+    // Handle element selection during the element selection state
+    handleElementSelection(key);
+    // Set the game state back to normal after element selection
+    inElementSelection = false;
+    // Unpause the game
+    gamePaused = false;
+  }
 }
-
 
 void mousePressed() {
   if (gameOver) {
@@ -165,6 +248,7 @@ void mousePressed() {
     initializeGame();
   }
 }
+
 void displayStartupScreen() {
   background(173, 216, 230);  // Set the background to light blue
 
@@ -199,4 +283,21 @@ void displayGameOverScreen() {
   textSize(20);
   String finalScoreText = "Final Score: " + score;
   text(finalScoreText, width / 2 - textWidth(finalScoreText) / 2, height / 2 + 20);
+}
+
+void handleElementSelection(char key) {
+  // Check the user's input and set the selectedElement accordingly
+  if (key == '1') {
+    player.selectedElement = "fire";
+    player.elementSelected = true;
+  } else if (key == '2') {
+    player.selectedElement = "water";
+    player.elementSelected = true;
+  } else if (key == '3') {
+    player.selectedElement = "earth";
+    player.elementSelected = true;
+  } else if (key == '4') {
+    player.selectedElement = "air";
+    player.elementSelected = true;
+  }
 }
