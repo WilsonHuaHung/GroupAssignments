@@ -8,8 +8,22 @@ class Player {
   int minSize; // Minimum size for the player
   int level; // Player level
   String selectedElement; // Selected element
-  boolean elementSelected; // Flag to track if the element is selected
+  boolean elementSelected = false; // Flag to track if the element is selected
   ArrayList<Projectile> projectiles;
+  boolean elementSelectionMenuActive = false;
+  Shield shield; // Declare shield at the class level
+
+  
+  // Add these fields for projectile cooldowns
+  int fireCooldown = 30; // Cooldown for fire projectiles in frames (adjust as needed)
+  int waterCooldown = 20; // Cooldown for water projectiles in frames (adjust as needed)
+  int earthCooldown = 60; // Cooldown for earth projectiles in frames (adjust as needed)
+  int airCooldown = 10; // Cooldown for air projectiles in frames (adjust as needed)
+
+  int fireCooldownCounter = 0;
+  int waterCooldownCounter = 0;
+  int earthCooldownCounter = 0;
+  int airCooldownCounter = 0;
 
   Player() {
     x = width / 2;
@@ -19,7 +33,7 @@ class Player {
     growthIncrement = 3; // Set the growth increment size
     canGrow = true; // Initialize the flag as true
     minSize = 20; // Set the minimum size
-    level = 1; // Start at level 1
+    level = 2; // Start at level 1
     selectedElement = "";
     elementSelected = false;
     projectiles = new ArrayList<>(); // Initialize the projectiles list
@@ -38,6 +52,21 @@ class Player {
       player.levelUp();
     }
 
+
+    // Update projectile cooldown counters
+    if (fireCooldownCounter > 0) {
+      fireCooldownCounter--;
+    }
+    if (waterCooldownCounter > 0) {
+      waterCooldownCounter--;
+    }
+    if (earthCooldownCounter > 0) {
+      earthCooldownCounter--;
+    }
+    if (airCooldownCounter > 0) {
+      airCooldownCounter--;
+    }
+    
     // Update projectiles
     for (int i = projectiles.size() - 1; i >= 0; i--) {
       Projectile projectile = projectiles.get(i);
@@ -61,40 +90,60 @@ class Player {
     }
   }
 
+
   void display() {
-    // Display the player character
-    fill(0, 100, 100);
-    ellipse(x, y, size, size);
+      // Display the player character
+      fill(0, 100, 100);
+      ellipse(x, y, size, size);
 
-    // Display shield animation at level 3
-    if (level == 3) {
-      displayShield();
-    }
+      // Display shield animation at level 3
+      if (level == 3) {
+        shield = new Shield(x, y, size, selectedElement);
+      }
 
-    // Display projectiles
-    for (Projectile projectile : projectiles) {
-      projectile.display();
-    }
+      // Display projectiles
+      for (Projectile projectile : projectiles) {
+          projectile.display();
+      }
   }
 
+  void displayShield() {
+  if (shield != null) {
+    shield.display();
+  }
+}
+  
   boolean hits(FireEnemy enemy) {
+    // Check if the shield is active and the enemy is close to the player
+    if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
+      // Enemy touches the shield, make the shield disappear
+      shield = null;
+      return true; // The shield blocks the enemy
+    }
+
     float distance = dist(x, y, enemy.x, enemy.y);
     return distance < size / 2 + enemy.size / 2;
   }
 
   boolean hits(WaterEnemy enemy) {
+    // Check if the shield is active and the enemy is close to the player
+    if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
+      // Enemy touches the shield, make the shield disappear
+      shield = null;
+      return true; // The shield blocks the enemy
+    }
+
     float distance = dist(x, y, enemy.x, enemy.y);
     if (distance < size / 2 + enemy.size / 2 && canGrow) {
-      // Increase the player's size by the growth increment
       size += growthIncrement;
-      canGrow = false; // Set the flag to false to prevent continuous growth
+      canGrow = false;
       return true;
     } else if (distance >= size / 2 + enemy.size / 2) {
-      canGrow = true; // Reset the flag when no longer colliding
+      canGrow = true;
     }
     return false;
   }
-
+  
   boolean hits(Powerup powerup) {
     float distance = dist(x, y, powerup.x, powerup.y);
     if (distance < size / 2 + powerup.size / 2) {
@@ -134,26 +183,11 @@ class Player {
     gamePaused = false;
 
     inElementSelection = true;
-  }
-
-  void displayShield() {
-    // Implement shield animation based on the selected element
-    if (selectedElement.equals("fire")) {
-      // Fire shield animation
-      // ...
-    } else if (selectedElement.equals("water")) {
-      // Water shield animation
-      // ...
-    } else if (selectedElement.equals("earth")) {
-      // Earth shield animation
-      // ...
-    } else if (selectedElement.equals("air")) {
-      // Air shield animation
-      // ...
+    
+    if (level == 3) {
+        shield = new Shield(x, y, size, selectedElement);
     }
   }
-
-  boolean elementSelectionMenuActive = false;
 
   void displayElementSelectionMenu() {
     if (level == 2 && !elementSelected) {
@@ -192,15 +226,18 @@ class Player {
   void shootProjectile() {
     // Check if an element is selected
     if (elementSelected) {
-      // Create a new projectile based on the selected element
-      if (selectedElement.equals("fire")) {
+      if (selectedElement.equals("fire") && fireCooldownCounter == 0) {
         projectiles.add(new FireProjectile(x, y));
-      } else if (selectedElement.equals("water")) {
+        fireCooldownCounter = fireCooldown;
+      } else if (selectedElement.equals("water") && waterCooldownCounter == 0) {
         projectiles.add(new WaterProjectile(x, y));
-      } else if (selectedElement.equals("earth")) {
+        waterCooldownCounter = waterCooldown;
+      } else if (selectedElement.equals("earth") && earthCooldownCounter == 0) {
         projectiles.add(new EarthProjectile(x, y));
-      } else if (selectedElement.equals("air")) {
+        earthCooldownCounter = earthCooldown;
+      } else if (selectedElement.equals("air") && airCooldownCounter == 0) {
         projectiles.add(new AirProjectile(x, y));
+        airCooldownCounter = airCooldown;
       }
     }
   }

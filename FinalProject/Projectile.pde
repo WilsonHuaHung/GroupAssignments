@@ -1,21 +1,22 @@
-// Projectile class
 class Projectile {
   float x;
   float y;
   float speedX;
   float speedY;
-  float size;
+  float size; // Adjust the size of the projectile
   String element;
+  float playerX; // Added parameter for player's x position
 
-  Projectile(float x, float y, float speedX, float speedY, String element) {
-    this.x = x;
-    this.y = y;
+  Projectile(float playerX, float startY, float speedX, float speedY, String element) {
+    this.x = playerX; // Set initial x position to player's x position
+    this.y = startY;
     this.speedX = speedX;
     this.speedY = speedY;
-    this.size = 10; // Adjust the size as needed
+    this.size = 20; // Adjust the size as needed
     this.element = element;
+    this.playerX = playerX;
   }
-  
+
   void update() {
     x += speedX;
     y += speedY;
@@ -23,18 +24,14 @@ class Projectile {
 
   void display() {
     if (element.equals("fire")) {
-      fill(255, 0, 0); // Red for fire element
     } else if (element.equals("water")) {
       fill(0, 0, 255); // Blue for water element
     } else if (element.equals("earth")) {
       fill(139, 69, 19); // Brown for earth element
     } else if (element.equals("air")) {
-      fill(192); // Light grey for air element
     } else {
       fill(255); // Default color
     }
-
-    ellipse(x, y, size, size);
   }
 
   boolean offscreen() {
@@ -52,38 +49,93 @@ class Projectile {
   }
 }
 
-// FireProjectile class
 class FireProjectile extends Projectile {
-  FireProjectile(float startX, float startY) {
-    super(startX, startY, 8, -1, "fire");
+  FireProjectile(float playerX, float startY) {
+    super(playerX, startY, 0, -8, "fire");
   }
+  
+  void display() {
+    // Customize the drawing for the fire projectile
+    float halfSize = size / 2;
+    float quarterSize = size / 4;
 
-  // Other methods (update, display, offscreen) go here
+    // Draw a custom shape (e.g., a flame)
+    fill(255, 0, 0); // Red color for fire element
+    beginShape();
+    vertex(x, y - halfSize); // Top point
+    bezierVertex(x - quarterSize, y - size, x - quarterSize / 2, y - size, x, y - quarterSize); // Left top flame
+    bezierVertex(x + quarterSize / 2, y - size, x + quarterSize, y - size, x, y - halfSize); // Right top flame
+    vertex(x - quarterSize, y + halfSize); // Bottom-left point
+    vertex(x, y + quarterSize); // Middle-bottom point
+    vertex(x + quarterSize, y + halfSize); // Bottom-right point
+    bezierVertex(x + quarterSize / 2, y, x + quarterSize / 2, y, x, y + quarterSize); // Right bottom flame
+    bezierVertex(x - quarterSize / 2, y, x - quarterSize / 2, y, x, y + quarterSize); // Left bottom flame
+    endShape(CLOSE);
+  }
 }
 
-// WaterProjectile class
 class WaterProjectile extends Projectile {
-  WaterProjectile(float startX, float startY) {
-    super(startX, startY, 5, -1, "water");
+  WaterProjectile(float playerX, float startY) {
+    super(playerX, startY, 0, -3, "water");
   }
 
-  // Other methods (update, display, offscreen) go here
+  void display() {
+    // Customize the drawing for the water projectile
+    float halfSize = size / 2;
+    float quarterSize = size / 4;
+
+    // Draw a modified bloopy and doopy shape for water
+    fill(0, 0, 255); // Blue color for water element
+    beginShape();
+    vertex(x - quarterSize, y - halfSize); // Top-left point
+    bezierVertex(x - quarterSize, y - halfSize, x, y - quarterSize, x + quarterSize, y - halfSize); // Top curve
+    bezierVertex(x + quarterSize, y - halfSize, x, y + quarterSize, x - quarterSize, y - halfSize); // Bottom curve
+    endShape();
+  }
 }
 
-// EarthProjectile class
 class EarthProjectile extends Projectile {
-  EarthProjectile(float startX, float startY) {
-    super(startX, startY, 5, -1, "earth");
+  EarthProjectile(float playerX, float startY) {
+    super(playerX, startY, 0, -2, "earth");
+    size = 50;  // Adjust the size as needed
+
   }
 
-  // Other methods (update, display, offscreen) go here
+
+  void display() {
+    // Customize the drawing for the earth projectile
+    float halfSize = size / 2;
+    float quarterSize = size / 4;
+
+    // Draw a rocky shape for earth
+    fill(139, 69, 19); // Brown color for earth element
+    beginShape();
+    vertex(x, y - halfSize); // Top point
+    vertex(x - quarterSize, y - quarterSize); // Top-left point
+    vertex(x, y + quarterSize); // Middle-bottom point
+    vertex(x + quarterSize, y - quarterSize); // Top-right point
+    endShape(CLOSE);
+  }
 }
 
-// AirProjectile class
 class AirProjectile extends Projectile {
-  AirProjectile(float startX, float startY) {
-    super(startX, startY, 10, -1, "air");
+  AirProjectile(float playerX, float startY) {
+    super(playerX, startY, 0, -15, "air");
+  }
+  
+  void display() {
+    // Customize the drawing for the fire projectile
+    float halfSize = size / 2;
+    float quarterSize = size / 4;
+  
+    // Draw a custom shape (e.g., a flame)
+    fill(255); // Red color for fire element
+    beginShape();
+    vertex(x, y - halfSize); // Top point
+    vertex(x - quarterSize, y + halfSize); // Bottom-left point
+    vertex(x, y + quarterSize); // Middle-bottom point
+    vertex(x + quarterSize, y + halfSize); // Bottom-right point
+    endShape(CLOSE);
   }
 
-  // Other methods (update, display, offscreen) go here
 }
