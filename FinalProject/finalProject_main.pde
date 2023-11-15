@@ -39,11 +39,6 @@ void draw() {
     // Display the game screen
     image(backgroundImage, 0, 0, width, height);
 
-
-
-    // Debugging statement
-    // println("Player Element: " + player.selectedElement);
-
     player.update();
     player.display();
 
@@ -58,6 +53,25 @@ void draw() {
       if (fireEnemy.offscreen()) {
         fireEnemies.remove(i);
         score++;
+      }
+    }
+    
+    // Check for collisions with Fire enemies
+    for (int i = fireEnemies.size() - 1; i >= 0; i--) {
+      FireEnemy fireEnemy = fireEnemies.get(i);
+      if (player.hits(fireEnemy)) {
+        // Check the type of collision
+        if (!inElementSelection) {
+          // If not in element selection, decrement lives and handle accordingly
+          lives--;
+          if (lives <= 0) {
+            gameOver = true;
+          } else {
+              // If there are remaining lives, reset the player's position
+            player.x = width / 2;
+            player.y = height - 30;
+          }                     
+        }
       }
     }
     
@@ -82,33 +96,6 @@ void draw() {
       }
     }
 
-      // Check for collisions with Fire enemies
-      for (int i = fireEnemies.size() - 1; i >= 0; i--) {
-        FireEnemy fireEnemy = fireEnemies.get(i);
-        if (player.hits(fireEnemy)) {
-          
-              // Debugging statement
-              // println("Hit by fire enemy!");
-
-          // Check the type of collision
-          if (!inElementSelection) {
-            
-                  // Debugging statement
-                  //println("Not in element selection, decrementing lives");
-                  
-            // If not in element selection, decrement lives and handle accordingly
-            lives--;
-            if (lives <= 0) {
-              gameOver = true;
-            } else {
-                // If there are remaining lives, reset the player's position
-              player.x = width / 2;
-              player.y = height - 30;
-            }
-          }
-      }
-    }
-
     // Create and display Powerups
     if (frameCount % 100 == 0) {
       powerups.add(new Powerup());
@@ -121,7 +108,6 @@ void draw() {
         powerups.remove(i);
         score--;
       }
-
       // Check for collisions with powerups
       if (player.hits(powerup)) {
         // Handle powerup collision logic here
@@ -163,24 +149,27 @@ void draw() {
     text("Score: " + score, 20, 30);
     text("Lives: " + lives, width - 120, 30);
     
+    
+    // Shooting projectile
+    // Display projectiles
+    for (Projectile projectile : player.projectiles) {
+      projectile.display();
+    }
+    
+    
+    // When user turns level two. Users will be prompted to select a specific element.
     player.displayElementSelectionMenu();
 
     if (player.elementSelectionMenuActive) {
       // Element selection menu is active
       return;  
     }
-
     // Check if the element is selected
     if (player.elementSelected) {
       // Handle element selection
       player.handleElementSelection(key);
     }
 
-    // Display projectiles
-    for (Projectile projectile : player.projectiles) {
-      projectile.display();
-    }
-    
     if (inElementSelection) {
       // Handle element selection during the element selection state
       handleElementSelection(key);
@@ -189,6 +178,7 @@ void draw() {
       // Unpause the game
       gamePaused = false;
     }
+    
     // Display projectiles at level 2
     if (player.level == 2 && !player.elementSelected && !inElementSelection) {
       player.displayElementSelectionMenu();
@@ -218,10 +208,6 @@ void draw() {
     // Display the game over screen
     displayGameOverScreen();
   }
-  
-    // Debugging statements
- // println("Player X: " + player.x + ", Player Y: " + player.y);
- // println("Projectile Count: " + projectiles.size());
 }
 
 void keyPressed() {
@@ -286,6 +272,7 @@ void mousePressed() {
     player.shootProjectile();
   }
 }
+
 void displayStartupScreen() {
   background(173, 216, 230);  // Set the background to light blue
 

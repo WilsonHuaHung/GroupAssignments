@@ -14,7 +14,7 @@ class Player {
   Shield shield; // Declare shield at the class level
 
   
-  // Add these fields for projectile cooldowns
+  // projectile cooldowns
   int fireCooldown = 30; // Cooldown for fire projectiles in frames (adjust as needed)
   int waterCooldown = 20; // Cooldown for water projectiles in frames (adjust as needed)
   int earthCooldown = 60; // Cooldown for earth projectiles in frames (adjust as needed)
@@ -33,16 +33,13 @@ class Player {
     growthIncrement = 3; // Set the growth increment size
     canGrow = true; // Initialize the flag as true
     minSize = 20; // Set the minimum size
-    level = 2; // Start at level 1
+    level = 1; // Start at level 1
     selectedElement = "";
     elementSelected = false;
     projectiles = new ArrayList<>(); // Initialize the projectiles list
   }
 
   void update() {
-    // Update player position based on controls
-    // ...
-
     // Check for level up
     if (score >= 10 && player.level == 1) {
       player.levelUp();
@@ -51,7 +48,6 @@ class Player {
     } else if (score >= 30 && player.level == 3) {
       player.levelUp();
     }
-
 
     // Update projectile cooldown counters
     if (fireCooldownCounter > 0) {
@@ -90,29 +86,28 @@ class Player {
     }
   }
 
-
   void display() {
       // Display the player character
       fill(0, 100, 100);
       ellipse(x, y, size, size);
-
       // Display shield animation at level 3
       if (level == 3) {
         shield = new Shield(x, y, size, selectedElement);
       }
-
       // Display projectiles
       for (Projectile projectile : projectiles) {
           projectile.display();
       }
-  }
+    }
 
   void displayShield() {
-  if (shield != null) {
-    shield.display();
-  }
-}
+    if (shield != null) {
+      shield.display();
+      }
+    }
   
+  
+ // Hitting interactions
   boolean hits(FireEnemy enemy) {
     // Check if the shield is active and the enemy is close to the player
     if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
@@ -122,7 +117,19 @@ class Player {
     }
 
     float distance = dist(x, y, enemy.x, enemy.y);
-    return distance < size / 2 + enemy.size / 2;
+    if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
+      // Only decrement lives if the shield is not active
+      lives--;
+      if (lives <= 0) {
+        gameOver = true;
+      } else {
+        // If there are remaining lives, reset the player's position
+        x = width / 2;
+        y = height - 30;
+      }
+      return true;
+    }
+    return false;
   }
 
   boolean hits(WaterEnemy enemy) {
@@ -162,6 +169,12 @@ class Player {
     y = constrain(y, size / 2, height - size / 2);
   }
 
+  boolean shieldActive() {
+    return shield != null;
+  }
+
+
+  // Level up interaction
   void levelUp() {
     level++;
 
@@ -189,6 +202,9 @@ class Player {
     }
   }
 
+
+
+  // Element Selection Menu
   void displayElementSelectionMenu() {
     if (level == 2 && !elementSelected) {
       // Display element selection menu
@@ -223,6 +239,9 @@ class Player {
     }
   }
 
+
+
+  // Level 2 Projectiles (Fire, Water, Earth, Air)
   void shootProjectile() {
     // Check if an element is selected
     if (elementSelected) {
