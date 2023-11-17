@@ -14,6 +14,23 @@ class Shield {
         this.element = element;
     }
 
+    void update(float playerX, float playerY) {
+      // Update shield position based on the player's position
+      this.x = playerX;
+      this.y = playerY;
+    }
+
+    boolean hits(FireEnemy enemy) {
+        float distance = dist(x, y, enemy.x, enemy.y);
+        return distance < getRadius() + enemy.size / 2;
+    }
+
+    boolean hits(WaterEnemy enemy) {
+        float distance = dist(x, y, enemy.x, enemy.y);
+        return distance < getRadius() + enemy.size / 2;
+    }
+    
+    
     void display() {
         if (element.equals("fire")) {
             drawFireShield();

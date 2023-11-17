@@ -24,8 +24,9 @@ class FireEnemy {
     return y > height + size / 2;
   }
 
-  boolean hitsPlayer(Player player) {
+  boolean hits(Player player) {
+    // Check for collision with the player
     float distance = dist(x, y, player.x, player.y);
-    return distance < size / 2 + player.size / 2 && !player.shieldActive();
+    return distance < size / 2 + player.size / 2;
   }
 }

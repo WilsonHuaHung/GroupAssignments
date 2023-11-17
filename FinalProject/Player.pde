@@ -90,10 +90,29 @@ class Player {
       // Display the player character
       fill(0, 100, 100);
       ellipse(x, y, size, size);
+  
       // Display shield animation at level 3
       if (level == 3) {
-        shield = new Shield(x, y, size, selectedElement);
+        if (shield == null) {
+          shield = new Shield(x, y, size, selectedElement);
+        }
+  
+        shield.update(x, y); // Update shield position
+        shield.display();
+  
+        // Check for collisions with fireEnemies
+        for (int i = fireEnemies.size() - 1; i >= 0; i--) {
+          FireEnemy fireEnemy = fireEnemies.get(i);
+          if (shield.hits(fireEnemy)) {
+            // Enemy touches the shield, make the enemy disappear
+            fireEnemies.remove(i);
+          }
+        }
+        // Similar checks can be added for other enemy types
+      } else {
+        shield = null; // Reset shield when not at level 3
       }
+    
       // Display projectiles
       for (Projectile projectile : projectiles) {
           projectile.display();
@@ -111,9 +130,8 @@ class Player {
   boolean hits(FireEnemy enemy) {
     // Check if the shield is active and the enemy is close to the player
     if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-      // Enemy touches the shield, make the shield disappear
-      shield = null;
-      return true; // The shield blocks the enemy
+      // Enemy touches the shield, make the enemy disappear
+      return true;
     }
 
     float distance = dist(x, y, enemy.x, enemy.y);
@@ -135,17 +153,16 @@ class Player {
   boolean hits(WaterEnemy enemy) {
     // Check if the shield is active and the enemy is close to the player
     if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-      // Enemy touches the shield, make the shield disappear
-      shield = null;
-      return true; // The shield blocks the enemy
+      // Enemy touches the shield, make the enemy disappear
+      return true;
     }
 
     float distance = dist(x, y, enemy.x, enemy.y);
-    if (distance < size / 2 + enemy.size / 2 && canGrow) {
+    if (!shieldActive() && distance < size / 2 + enemy.size / 2 && canGrow) {
       size += growthIncrement;
       canGrow = false;
       return true;
-    } else if (distance >= size / 2 + enemy.size / 2) {
+    } else if (!shieldActive() && distance >= size / 2 + enemy.size / 2) {
       canGrow = true;
     }
     return false;
