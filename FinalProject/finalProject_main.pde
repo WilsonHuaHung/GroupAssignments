@@ -316,8 +316,7 @@ void mousePressed() {
     // Handle shooting projectiles
     player.shootProjectile();
   }
-  
-  print(mouseX,mouseY);
+
   // if settings button is clicked and user is on start screen
   if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
     settingsOn = true;}
