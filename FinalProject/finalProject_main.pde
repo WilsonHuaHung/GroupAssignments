@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile audioFile;
+
 Player player;
 ArrayList<FireEnemy> fireEnemies;
 ArrayList<WaterEnemy> waterEnemies;
@@ -10,6 +13,14 @@ boolean gameStarted;  // New variable to track whether the game has started
 PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
+boolean settingsOn = false;
+// defaults to medium difficulty
+int fireDifficulty = 90;
+int waterDifficulty = 75;
+int powerDifficulty = 100;
+
+Buttons[] diffButtons = new Buttons[3];
+Buttons[] audioButtons = new Buttons[5];
 
 void setup() {
   size(400, 400);
@@ -29,12 +40,42 @@ void setup() {
   // Set a readable font for the score and lives
   PFont font = createFont("Arial", 16);
   textFont(font);
+  
+  for (int i = 0; i < diffButtons.length; i++) {
+    int x =100 + i*50;
+    diffButtons[i] = new Buttons(x, 155, 10, color(255), color(0), i,diffButtons);
+  }
+  
+ audioFile = new SoundFile(this, "sound.mp3");
+ audioFile.play();
+ audioFile.amp(.5);
+  for (int i = 0; i < audioButtons.length; i++) {
+    int x =100 + i*50;
+    audioButtons[i] = new Buttons(x, 280, 10, color(255), color(0), i,audioButtons);
+  }
+  
+  // manually sets buttons to middle to begin
+  diffButtons[1].isPressed(151,155);
+  audioButtons[2].isPressed(204,289);
+  
 }
 
 void draw() {
   if (!gameStarted) {
     // Display the startup screen
-    displayStartupScreen();
+    if (settingsOn){
+      displaySettingsScreen();
+        for (Buttons b : diffButtons) {
+        b.display();}
+        
+       for (Buttons b : audioButtons) {
+        b.display();}
+      }
+      else{
+      displayStartupScreen();
+    
+  }
+    
   } else if (!gameOver && !gamePaused) {
     // Display the game screen
     image(backgroundImage, 0, 0, width, height);
@@ -43,7 +84,7 @@ void draw() {
     player.display();
 
     // Create and display Fire enemies
-    if (frameCount % 90 == 0) {
+    if (frameCount % fireDifficulty == 0) {
       fireEnemies.add(new FireEnemy());
     }
     for (int i = fireEnemies.size() - 1; i >= 0; i--) {
@@ -76,7 +117,7 @@ void draw() {
     }
     
     // Create and display Water enemies
-    if (frameCount % 75 == 0) {
+    if (frameCount % waterDifficulty == 0) {
       waterEnemies.add(new WaterEnemy());
     }
     for (int i = waterEnemies.size() - 1; i >= 0; i--) {
@@ -97,7 +138,7 @@ void draw() {
     }
 
     // Create and display Powerups
-    if (frameCount % 100 == 0) {
+    if (frameCount % powerDifficulty == 0) {
       powerups.add(new Powerup());
     }
     for (int i = powerups.size() - 1; i >= 0; i--) {
@@ -204,6 +245,9 @@ void draw() {
     textSize(20);
     String finalScoreText = "Final Score: " + score;
     text(finalScoreText, width / 2 - textWidth(finalScoreText) / 2, height / 2 + 20);
+    
+    String returnText = "Click to return to home";
+    text(returnText, width / 2 - textWidth(returnText) / 2, height / 2 + 100);
   } else {
     // Display the game over screen
     displayGameOverScreen();
@@ -264,13 +308,41 @@ void mousePressed() {
     score = 0;
     lives = 3;
     gameOver = false;
-    initializeGame();
+    gameStarted = false;
+    displayStartupScreen();
   }
   // Check if the left mouse button is pressed
   if (mouseButton == LEFT && player.level >= 2 && !player.elementSelectionMenuActive) {
     // Handle shooting projectiles
     player.shootProjectile();
   }
+  
+  print(mouseX,mouseY);
+  // if settings button is clicked and user is on start screen
+  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
+    settingsOn = true;}
+    
+    //updates difficulty based on user selection
+    for (int i = 0; i < diffButtons.length; i++) {
+      diffButtons[i].isPressed(mouseX, mouseY);
+      if (diffButtons[i].isPressed(mouseX, mouseY) == true){
+          fireDifficulty = 130 - (i*40);
+          waterDifficulty = 115 - (i*40);
+          powerDifficulty = 90 + (i*10);
+          //print(fireDifficulty, waterDifficulty, powerDifficulty); 
+        }}
+        
+    //updates audio based on user selection
+    for (int i = 0; i < audioButtons.length; i++) {
+      audioButtons[i].isPressed(mouseX, mouseY);
+      if (audioButtons[i].isPressed(mouseX, mouseY) == true){
+      audioFile.amp(map(i, 0, 5, 0, 1));}
+    }
+       
+  // go back to home
+  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
+    settingsOn = false;}
+    
 }
 
 void displayStartupScreen() {
@@ -284,8 +356,36 @@ void displayStartupScreen() {
   textSize(15);
   String startText = "PRESS ANY KEY TO START ";
   text(startText, width / 2 - textWidth(startText) / 2, height / 2 + 20);
+  
+  // settings button  
+  fill(255);
+  rect(300,330, 75,40);
+  fill(0);
+  text("Settings", 310,355);
+  
 }
-
+ void displaySettingsScreen() {
+   background(173, 216, 230);
+   //textAlign(CENTER, CENTER);
+  fill(255);
+  stroke(0);
+  rect(280,350, 110,30);
+  fill(0);
+  text("Back to Home", 290,370);
+   
+   fill(0);
+   textSize(30);
+   text("Settings", 150, 50);
+   textSize(20);
+   text("Difficulty:", 50,100); 
+   text("Audio: ", 50,230);
+   fill(100);
+   textSize(15);
+   text("Easy",80,190);
+   text("Hard", 190,190);
+   text("Low", 80,310);
+   text("High", 290,310); 
+ }
 void initializeGame() {
   player = new Player();
   fireEnemies = new ArrayList<FireEnemy>();
@@ -298,7 +398,7 @@ void initializeGame() {
 
 void displayGameOverScreen() {
   background(0);  // Set the background to black
-
+  audioFile.play();
   fill(255);
   textSize(32);
   String gameOverText = "Game Over";
@@ -307,6 +407,8 @@ void displayGameOverScreen() {
   textSize(20);
   String finalScoreText = "Final Score: " + score;
   text(finalScoreText, width / 2 - textWidth(finalScoreText) / 2, height / 2 + 20);
+  String returnText = "Click to return to home";
+  text(returnText, width / 2 - textWidth(returnText) / 2, height / 2 + 100);
 }
 
 void handleElementSelection(char key) {
