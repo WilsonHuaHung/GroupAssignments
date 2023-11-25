@@ -14,6 +14,7 @@ PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
 boolean settingsOn = false;
+boolean howTo = false;
 // defaults to medium difficulty
 int fireDifficulty = 90;
 int waterDifficulty = 75;
@@ -48,7 +49,7 @@ void setup() {
   }
   
  audioFile = new SoundFile(this, "sound.mp3");
- audioFile.play();
+ audioFile.loop();
  audioFile.amp(.5);
   for (int i = 0; i < audioButtons.length; i++) {
     int x =100 + i*50;
@@ -71,7 +72,10 @@ void draw() {
         
        for (Buttons b : audioButtons) {
         b.display();}
-      }
+        //  how to play screen
+       if (howTo){
+          displayHowTo();}
+    }
       else{
       displayStartupScreen();
     
@@ -343,8 +347,12 @@ void mousePressed() {
        
   // go back to home
   if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
-    settingsOn = false;}
-    
+    settingsOn = false;
+    howTo = false;}
+  
+  // how to play screen
+  if (mouseX >= 20 && mouseX <= 100 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
+    howTo = !howTo;}
 }
 
 void displayStartupScreen() {
@@ -372,8 +380,10 @@ void displayStartupScreen() {
   fill(255);
   stroke(0);
   rect(280,350, 110,30);
+  rect(20,350,100,30);
   fill(0);
   text("Back to Home", 290,370);
+  text("How to Play", 30,370);
    
    fill(0);
    textSize(30);
@@ -387,6 +397,19 @@ void displayStartupScreen() {
    text("Hard", 190,190);
    text("Low", 80,310);
    text("High", 290,310); 
+ }
+ 
+ void displayHowTo() {
+   rect(50,60,300,280);
+   textSize(25);
+   fill(0);
+   text("How to Play", 150, 100);
+   textSize(15);
+   text("1. Press W, A, S, D to move character ", 75, 130);
+   text("2. Left click to shoot projectile", 75, 150);
+   text("3. Recieve power-up after ___", 75, 170);
+   text("4. 10 xp for next power up ", 75, 190);
+   text("5. ____", 75, 210); 
  }
 void initializeGame() {
   player = new Player();
