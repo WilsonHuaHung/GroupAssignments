@@ -19,6 +19,7 @@ int fireDifficulty = 90;
 int waterDifficulty = 75;
 int powerDifficulty = 100;
 
+
 Buttons[] diffButtons = new Buttons[3];
 Buttons[] audioButtons = new Buttons[5];
 
@@ -151,7 +152,7 @@ void draw() {
       }
       // Check for collisions with powerups
       if (player.hits(powerup)) {
-        // Handle powerup collision logic here
+        player.powerupCount++;
       }
     }
 
@@ -184,11 +185,13 @@ void draw() {
     fill(255, 0, 0); 
     rect(8, 8, 120, 30);
     rect(275, 8, 100, 30);
+    rect(8, 360, 100, 30);
     // Display score and lives with black font
     fill(0);
     textSize(24);
     text("Score: " + score, 20, 30);
     text("Lives: " + lives, width - 120, 30);
+    text("XP: " + player.powerupCount, width - 390, 385);
     
     
     // Shooting projectile
@@ -259,7 +262,7 @@ void keyPressed() {
     // Start the game when any key is pressed
     gameStarted = true;
     initializeGame();
-  } else if (!gameOver && key == ' ') {
+  } else if (!gameOver && key == 'p') {
     // Toggle game pause on spacebar press during the game
     gamePaused = !gamePaused;
     if (gamePaused) {
