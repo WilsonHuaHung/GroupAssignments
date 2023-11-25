@@ -12,6 +12,7 @@ class Player {
   ArrayList<Projectile> projectiles;
   boolean elementSelectionMenuActive = false;
   Shield shield; // Declare shield at the class level
+  int powerupCount;
 
   
   // projectile cooldowns
@@ -37,15 +38,16 @@ class Player {
     selectedElement = "";
     elementSelected = false;
     projectiles = new ArrayList<>(); // Initialize the projectiles list
+    powerupCount = 0;
   }
 
   void update() {
     // Check for level up
-    if (score >= 10 && player.level == 1) {
+    if (powerupCount >= 200 && player.level == 1) {
       player.levelUp();
-    } else if (score >= 20 && player.level == 2) {
+    } else if (powerupCount >= 400 && player.level == 2) {
       player.levelUp();
-    } else if (score >= 30 && player.level == 3) {
+    } else if (powerupCount >= 600 && player.level == 3) {
       player.levelUp();
     }
 
@@ -174,6 +176,7 @@ class Player {
       // Shrink the player's size by the growth increment
       size -= growthIncrement;
       size = max(size, minSize); // Ensure the size doesn't go below the minimum size
+      powerupCount++;
       return true;
     }
     return false;
