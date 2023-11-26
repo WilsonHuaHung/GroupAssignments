@@ -102,25 +102,12 @@ class Player {
         shield.update(x, y); // Update shield position
         shield.display();
   
-        // Check for collisions with fireEnemies
-        for (int i = fireEnemies.size() - 1; i >= 0; i--) {
-          FireEnemy fireEnemy = fireEnemies.get(i);
-          if (shield.hits(fireEnemy)) {
-            // Enemy touches the shield, make the enemy disappear
-            fireEnemies.remove(i);
-          }
-        }
-        // Similar checks can be added for other enemy types
-      } else {
-        shield = null; // Reset shield when not at level 3
-      }
-    
       // Display projectiles
       for (Projectile projectile : projectiles) {
           projectile.display();
       }
     }
-
+  }
   void displayShield() {
     if (shield != null) {
       shield.display();

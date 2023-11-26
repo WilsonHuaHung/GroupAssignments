@@ -100,27 +100,13 @@ void draw() {
         fireEnemies.remove(i);
         score++;
       }
-    }
-    
-    // Check for collisions with Fire enemies
-    for (int i = fireEnemies.size() - 1; i >= 0; i--) {
-      FireEnemy fireEnemy = fireEnemies.get(i);
-      if (player.hits(fireEnemy)) {
-        // Check the type of collision
-        if (!inElementSelection) {
-          // If not in element selection, decrement lives and handle accordingly
-          lives--;
-          if (lives <= 0) {
-            gameOver = true;
-          } else {
-              // If there are remaining lives, reset the player's position
-            player.x = width / 2;
-            player.y = height - 30;
-          }                     
+          // Check for collisions with Water enemies
+      for (int j = fireEnemies.size() - 1; j >= 0; j--) {
+        if (player.hits(fireEnemy)) {
+          // Fire enemy hit logic already handled in the Player class
         }
       }
     }
-    
     // Create and display Water enemies
     if (frameCount % waterDifficulty == 0) {
       waterEnemies.add(new WaterEnemy());
