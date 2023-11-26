@@ -72,12 +72,12 @@ void draw() {
         
        for (Buttons b : audioButtons) {
         b.display();}
-        //  how to play screen
-       if (howTo){
-          displayHowTo();}
     }
       else{
       displayStartupScreen();
+      //  how to play screen
+      if (howTo){
+          displayHowTo();}
     
   }
     
@@ -351,7 +351,7 @@ void mousePressed() {
     howTo = false;}
   
   // how to play screen
-  if (mouseX >= 20 && mouseX <= 100 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
+  if (mouseX >= 20 && mouseX <= 100 && mouseY >= 330 && mouseY <= 360 && !gameStarted) {
     howTo = !howTo;}
 }
 
@@ -367,11 +367,14 @@ void displayStartupScreen() {
   String startText = "PRESS ANY KEY TO START ";
   text(startText, width / 2 - textWidth(startText) / 2, height / 2 + 20);
   
-  // settings button  
+  // settings button, how to play button  
   fill(255);
   rect(300,330, 75,40);
+  rect(20,330,100,30);
+  
   fill(0);
   text("Settings", 310,355);
+  text("How to Play", 30,350);
   
 }
  void displaySettingsScreen() {
@@ -379,11 +382,9 @@ void displayStartupScreen() {
    //textAlign(CENTER, CENTER);
   fill(255);
   stroke(0);
-  rect(280,350, 110,30);
-  rect(20,350,100,30);
+  rect(280,350, 110,30);  
   fill(0);
   text("Back to Home", 290,370);
-  text("How to Play", 30,370);
    
    fill(0);
    textSize(30);
@@ -400,16 +401,23 @@ void displayStartupScreen() {
  }
  
  void displayHowTo() {
-   rect(50,60,300,280);
+   fill(255);
+   rect(50,40,300,280);
    textSize(25);
    fill(0);
-   text("How to Play", 150, 100);
+   text("How to Play", 140, 80);
    textSize(15);
-   text("1. Press W, A, S, D to move character ", 75, 130);
-   text("2. Left click to shoot projectile", 75, 150);
-   text("3. Recieve power-up after ___", 75, 170);
-   text("4. 10 xp for next power up ", 75, 190);
-   text("5. ____", 75, 210); 
+   text("1. Press W, A, S, D to move character ", 70, 110);
+   text("2. Left click to shoot projectile", 70, 130);
+   text("3. Press P to pause the game", 70,150);
+   text("4. Avoid the fire enemies as you will lose", 70, 170);
+   text("a life if you collide with the player", 70, 190);
+   text("5. Water enemies are both your enemy", 70, 210);
+   text("and ally. They make you bigger to make", 70, 230);
+   text("it easier for you to earn power-ups, but", 70, 250);
+   text("also harm you as it is harder to dodge to", 70, 270);
+   text("fire enemies", 70, 290); 
+   text("6. Power Ups _____", 70, 310); 
  }
 void initializeGame() {
   player = new Player();
