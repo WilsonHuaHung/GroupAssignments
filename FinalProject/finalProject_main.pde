@@ -78,7 +78,6 @@ void draw() {
       //  how to play screen
       if (howTo){
           displayHowTo();}
-    
   }
     
   } else if (!gameOver && !gamePaused) {
@@ -100,7 +99,7 @@ void draw() {
         fireEnemies.remove(i);
         score++;
       }
-          // Check for collisions with Water enemies
+      // Check for collisions with Water enemies
       for (int j = fireEnemies.size() - 1; j >= 0; j--) {
         if (player.hits(fireEnemy)) {
           // Fire enemy hit logic already handled in the Player class
@@ -189,7 +188,6 @@ void draw() {
     for (Projectile projectile : player.projectiles) {
       projectile.display();
     }
-    
     
     // When user turns level two. Users will be prompted to select a specific element.
     player.displayElementSelectionMenu();
