@@ -13,7 +13,6 @@ class Player {
   boolean elementSelectionMenuActive = false;
   Shield shield; // Declare shield at the class level
   int powerupCount;
-
   
   // projectile cooldowns
   int fireCooldown = 30; // Cooldown for fire projectiles in frames (adjust as needed)
@@ -117,45 +116,44 @@ class Player {
   
  // Hitting interactions
   boolean hits(FireEnemy enemy) {
-    // Check if the shield is active and the enemy is close to the player
-    if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-      // Enemy touches the shield, make the enemy disappear
-      return true;
+    if (shieldActive() && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
+        // Enemy touches the shield, make the enemy disappear
+        return true;
     }
 
     float distance = dist(x, y, enemy.x, enemy.y);
     if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
-      // Only decrement lives if the shield is not active
-      lives--;
-      if (lives <= 0) {
-        gameOver = true;
-      } else {
-        // If there are remaining lives, reset the player's position
-        x = width / 2;
-        y = height - 30;
-      }
-      return true;
+        // Only decrement lives if the shield is not active
+        lives--;
+        if (lives <= 0) {
+            gameOver = true;
+        } else {
+            // If there are remaining lives, reset the player's position
+            x = width / 2;
+            y = height - 30;
+        }
+        return true;
     }
     return false;
-  }
+}
+
 
   boolean hits(WaterEnemy enemy) {
-    // Check if the shield is active and the enemy is close to the player
-    if (shield != null && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-      // Enemy touches the shield, make the enemy disappear
-      return true;
+    if (shieldActive() && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
+        // Enemy touches the shield, make the enemy disappear
+        return true;
     }
 
     float distance = dist(x, y, enemy.x, enemy.y);
     if (!shieldActive() && distance < size / 2 + enemy.size / 2 && canGrow) {
-      size += growthIncrement;
-      canGrow = false;
-      return true;
+        size += growthIncrement;
+        canGrow = false;
+        return true;
     } else if (!shieldActive() && distance >= size / 2 + enemy.size / 2) {
-      canGrow = true;
+        canGrow = true;
     }
     return false;
-  }
+}
   
   boolean hits(Powerup powerup) {
     float distance = dist(x, y, powerup.x, powerup.y);
@@ -206,6 +204,8 @@ class Player {
     
     if (level == 3) {
         shield = new Shield(x, y, size, selectedElement);
+    } else {
+        shield = null; // Ensure the shield is set to null when not at level 3
     }
   }
 
