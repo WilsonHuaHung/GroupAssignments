@@ -1,4 +1,6 @@
+PImage playerImage;
 class Player {
+  Animation playerAnimation;
   float x;
   float y;
   float speed;
@@ -26,6 +28,8 @@ class Player {
   int airCooldownCounter = 0;
 
   Player() {
+    String[] filenames = {"player1.png", "player2.png", "player3.png", "player4.png", "player5.png", "player6.png", "player7.png"};
+    playerAnimation = new Animation(filenames, 12, 2); // Initialize the animation with 12 frames per second
     x = width / 2;
     y = height - 30;
     speed = 40;
@@ -41,6 +45,7 @@ class Player {
   }
 
   void update() {
+    playerAnimation.update();
     // Check for level up
     if (powerupCount >= 200 && player.level == 1) {
       player.levelUp();
@@ -88,10 +93,9 @@ class Player {
   }
 
   void display() {
+    playerAnimation.display(this.x, this.y);
       // Display the player character
       fill(0, 100, 100);
-      ellipse(x, y, size, size);
-  
       // Display shield animation at level 3
       if (level == 3) {
         if (shield == null) {
@@ -101,6 +105,11 @@ class Player {
         shield.update(x, y); // Update shield position
         shield.display();
   
+      // Check for collisions with enemies
+      if (shieldActive() && shieldCollidesWithEnemy()) {
+        shield.deactivate(); // Deactivate the shield upon collision
+      }
+      
       // Display projectiles
       for (Projectile projectile : projectiles) {
           projectile.display();
@@ -177,6 +186,23 @@ class Player {
   boolean shieldActive() {
     return shield != null;
   }
+  
+  boolean shieldCollidesWithEnemy() {
+  for (FireEnemy enemy : fireEnemies) {
+    float distance = dist(x, y, enemy.x, enemy.y);
+    if (distance < shield.getRadius() + enemy.size / 2) {
+      return true;
+    }
+  }
+  for (WaterEnemy enemy : waterEnemies) {
+    float distance = dist(x, y, enemy.x, enemy.y);
+    if (distance < shield.getRadius() + enemy.size / 2) {
+      return true;
+    }
+  }
+  // Add similar checks for other enemy types if needed
+  return false;
+}
 
 
   // Level up interaction

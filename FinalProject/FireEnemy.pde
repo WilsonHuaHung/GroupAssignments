@@ -1,10 +1,15 @@
+
+PImage fireEnemyImage;
 class FireEnemy {
+  Animation fireEnemyAnimation;
   float x;
   float y;
   float speed;
   int size;
 
   FireEnemy() {
+    String[] filenames = {"fireEnemy1.png", "fireEnemy2.png", "fireEnemy3.png", "fireEnemy4.png", "fireEnemy5.png", "fireEnemy6.png", "fireEnemy7.png"};
+    fireEnemyAnimation = new Animation(filenames, 12, 2); // Initialize the animation with 12 frames per second
     x = random(width);
     y = 0;
     speed = 2;
@@ -12,12 +17,13 @@ class FireEnemy {
   }
 
   void update() {
+    fireEnemyAnimation.update();
     y += speed;
   }
 
   void display() {
+    fireEnemyAnimation.display(this.x, this.y);
     fill(255, 0, 0);
-    ellipse(x, y, size, size);
   }
 
   boolean offscreen() {
