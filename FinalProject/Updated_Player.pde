@@ -1,6 +1,6 @@
-
 PImage playerImage;
 class Player {
+  Animation playerAnimation;
   float x;
   float y;
   float speed;
@@ -28,6 +28,8 @@ class Player {
   int airCooldownCounter = 0;
 
   Player() {
+    String[] filenames = {"player1.png", "player2.png", "player3.png", "player4.png", "player5.png", "player6.png", "player7.png"};
+    playerAnimation = new Animation(filenames, 12, 2); // Initialize the animation with 12 frames per second
     x = width / 2;
     y = height - 30;
     speed = 40;
@@ -43,6 +45,7 @@ class Player {
   }
 
   void update() {
+    playerAnimation.update();
     // Check for level up
     if (powerupCount >= 200 && player.level == 1) {
       player.levelUp();
@@ -90,10 +93,9 @@ class Player {
   }
 
   void display() {
+    playerAnimation.display(this.x, this.y);
       // Display the player character
       fill(0, 100, 100);
-      image(playerImage, x - playerImage.width / 2, y - playerImage.height / 2);
-  
       // Display shield animation at level 3
       if (level == 3) {
         if (shield == null) {

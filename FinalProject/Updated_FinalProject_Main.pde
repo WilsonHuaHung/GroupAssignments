@@ -2,6 +2,8 @@ import processing.sound.*;
 SoundFile audioFile;
 
 Player player;
+FireEnemy fireEnemy;
+WaterEnemy waterEnemy;
 ArrayList<FireEnemy> fireEnemies;
 ArrayList<WaterEnemy> waterEnemies;
 ArrayList<Powerup> powerups;
@@ -25,17 +27,12 @@ Buttons[] diffButtons = new Buttons[3];
 Buttons[] audioButtons = new Buttons[5];
 
 
-PImage playerImage;
-PImage fireEnemyImage;
-PImage waterEnemyImage;
-
-void loadImages() {
-  playerImage = loadImage("player.png");
-  fireEnemyImage = loadImage("fireEnemy.png");
-  waterEnemyImage = loadImage("waterEnemy.png");
-}
 void setup() {
-  loadImages();
+  player = new Player();
+  fireEnemy = new FireEnemy();
+  waterEnemy = new WaterEnemy();
+  powerupImage = loadImage("powerup.png"); 
+ 
 
   size(400, 400);
   gameStarted = false;  // Set the initial state to not started
@@ -98,7 +95,10 @@ void draw() {
 
     player.update();
     player.display();
-
+    fireEnemy.update(); 
+    fireEnemy.display();
+    waterEnemy.update();
+    waterEnemy.display();
     // Create and display Fire enemies
     if (frameCount % fireDifficulty == 0) {
       fireEnemies.add(new FireEnemy());
