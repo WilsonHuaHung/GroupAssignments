@@ -142,40 +142,48 @@ class Player {
     if (shieldActive() && shield.hits(enemy)) {
       // Enemy touches the shield, make the enemy disappear
       shield.deactivate(); // Deactivate the shield
-          System.out.println("Shield hit by FireEnemy");
-
-      return true;
+      lives++;
+      System.out.println("Shield hit by FireEnemy");
+      return false;
     }
   
-    float distance = dist(x, y, enemy.x, enemy.y);
-    if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
-      // Only decrement lives if the shield is not active
-      handlePlayerHit();
-                System.out.println("Player hit by FireEnemy");
+    if (!shieldActive()) {
+      float distance = dist(x, y, enemy.x, enemy.y);
+      if (distance < size / 2 + enemy.size / 2) {
+        // Only decrement lives if the shield is not active
+        handlePlayerHit();
+        System.out.println("Player hit by FireEnemy");
+        return true;
+      }
+    }
+    return false;
+  }
 
+  boolean hits(WaterEnemy enemy) {
+     if (shieldActive() && shield.hits(enemy)) {
+      // Enemy touches the shield, make the enemy disappear
+      shield.deactivate(); // Deactivate the shield
+      lives++;
+      System.out.println("Shield hit by WaterEnemy");
       return false;
+    }
+  
+    if (!shieldActive() || shield.active == false) {
+      float distance = dist(x, y, enemy.x, enemy.y);
+      if (distance < size / 2 + enemy.size / 2) {
+        // Only decrement lives if the shield is not active
+        handlePlayerHit();
+        System.out.println("Player hit by WaterEnemy");
+        return true;
+      }
     }
     return false;
   }
   
-  boolean hits(WaterEnemy enemy) {
-    if (shieldActive() && shield.hits(enemy)) {
-      // Enemy touches the shield, make the enemy disappear
-      shield.deactivate(); // Deactivate the shield
-          System.out.println("Shield hit by Water");
-
-      return true;
-    }
-  
-    float distance = dist(x, y, enemy.x, enemy.y);
-    if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
-      // Only decrement lives if the shield is not active
-      handlePlayerHit();
-                System.out.println("Player hit by Water");
-
-      return false;
-    }
-    return false;
+  // Helper method for resetting the player's position
+  void resetPlayerPosition() {
+    x = width / 2;
+    y = height - 30;
   }
     
   // Helper method for handling player hit when shield is not active
@@ -211,11 +219,11 @@ class Player {
   }
 
   boolean shieldActive() {
-    return shield != null && shield.active;
+    return shield != null && shield.isActive(); 
   }
-  
+ 
   boolean shieldCollidesWithEnemy() {
-    if (shield != null && shield.active) {
+    if (shield != null && shield.active == false) {
       // Your existing collision logic
       for (FireEnemy enemy : fireEnemies) {
         float distance = dist(x, y, enemy.x, enemy.y);
@@ -225,7 +233,7 @@ class Player {
           return true;
         }
       }
-      
+  
       for (WaterEnemy enemy : waterEnemies) {
         float distance = dist(x, y, enemy.x, enemy.y);
         if (distance < shield.getRadius() + enemy.size / 2) {
@@ -233,12 +241,11 @@ class Player {
           shield.deactivate();
           return true;
         }
+      }       
+        // Add similar checks for other enemy types if needed
       }
-        
-      // Add similar checks for other enemy types if needed
+      return false;
     }
-    return false;
-  }
 
 
   // Level up interaction

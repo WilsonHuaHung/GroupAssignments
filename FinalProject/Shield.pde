@@ -55,10 +55,11 @@ class Shield {
 
     void deactivate() {
       active = false;
-        System.out.println("Shield deactivated");
-
       }
     
+      boolean isActive() {
+    return active;
+  }
     
     void drawFireShield() {
         fill(255, 0, 0, 100); // Red color with transparency
