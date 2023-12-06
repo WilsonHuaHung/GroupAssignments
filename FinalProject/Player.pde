@@ -105,10 +105,6 @@ class Player {
       shield.update(x, y); // Update shield position
       shield.display();
       
-          // Print shield status
-    System.out.println("Shield Active: " + shieldActive());
-
-  
       // Check for collisions with enemies
       if (shieldActive() && shieldCollidesWithEnemy()) {
         shield.deactivate();
