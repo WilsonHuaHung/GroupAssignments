@@ -94,28 +94,46 @@ class Player {
 
   void display() {
     playerAnimation.display(this.x, this.y);
-      // Display the player character
-      fill(0, 100, 100);
-      // Display shield animation at level 3
-      if (level == 3) {
-        if (shield == null) {
-          shield = new Shield(x, y, size, selectedElement);
-        }
+    fill(0, 100, 100);
+    
+    // Display shield animation at level 3
+    if (level == 3) {
+      if (shield == null) {
+        shield = new Shield(x, y, size, selectedElement);
+      }
   
-        shield.update(x, y); // Update shield position
-        shield.display();
+      shield.update(x, y); // Update shield position
+      shield.display();
+      
+          // Print shield status
+    System.out.println("Shield Active: " + shieldActive());
+
   
       // Check for collisions with enemies
       if (shieldActive() && shieldCollidesWithEnemy()) {
-        shield.deactivate(); // Deactivate the shield upon collision
+        shield.deactivate();
       }
       
       // Display projectiles
       for (Projectile projectile : projectiles) {
-          projectile.display();
+        projectile.display();
+      }
+    }
+    else {
+      // Check for standard collisions when shield is not active
+      for (FireEnemy enemy : fireEnemies) {
+        if (hits(enemy)) {
+          handlePlayerHit();
+        }
+      }
+      for (WaterEnemy enemy : waterEnemies) {
+        if (hits(enemy)) {
+          handlePlayerHit();
+        }
       }
     }
   }
+    
   void displayShield() {
     if (shield != null) {
       shield.display();
@@ -123,47 +141,60 @@ class Player {
     }
   
   
- // Hitting interactions
+// Hitting interactions
   boolean hits(FireEnemy enemy) {
-    if (shieldActive() && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-        // Enemy touches the shield, make the enemy disappear
-        return true;
-    }
+    if (shieldActive() && shield.hits(enemy)) {
+      // Enemy touches the shield, make the enemy disappear
+      shield.deactivate(); // Deactivate the shield
+          System.out.println("Shield hit by FireEnemy");
 
+      return true;
+    }
+  
     float distance = dist(x, y, enemy.x, enemy.y);
     if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
-        // Only decrement lives if the shield is not active
-        lives--;
-        if (lives <= 0) {
-            gameOver = true;
-        } else {
-            // If there are remaining lives, reset the player's position
-            x = width / 2;
-            y = height - 30;
-        }
-        return true;
+      // Only decrement lives if the shield is not active
+      handlePlayerHit();
+                System.out.println("Player hit by FireEnemy");
+
+      return false;
     }
     return false;
-}
-
-
-  boolean hits(WaterEnemy enemy) {
-    if (shieldActive() && dist(x, y, enemy.x, enemy.y) < shield.getRadius()) {
-        // Enemy touches the shield, make the enemy disappear
-        return true;
-    }
-
-    float distance = dist(x, y, enemy.x, enemy.y);
-    if (!shieldActive() && distance < size / 2 + enemy.size / 2 && canGrow) {
-        size += growthIncrement;
-        canGrow = false;
-        return true;
-    } else if (!shieldActive() && distance >= size / 2 + enemy.size / 2) {
-        canGrow = true;
-    }
-    return false;
-}
+  }
   
+  boolean hits(WaterEnemy enemy) {
+    if (shieldActive() && shield.hits(enemy)) {
+      // Enemy touches the shield, make the enemy disappear
+      shield.deactivate(); // Deactivate the shield
+          System.out.println("Shield hit by Water");
+
+      return true;
+    }
+  
+    float distance = dist(x, y, enemy.x, enemy.y);
+    if (!shieldActive() && distance < size / 2 + enemy.size / 2) {
+      // Only decrement lives if the shield is not active
+      handlePlayerHit();
+                System.out.println("Player hit by Water");
+
+      return false;
+    }
+    return false;
+  }
+    
+  // Helper method for handling player hit when shield is not active
+  void handlePlayerHit() {
+    lives--;
+    System.out.println("Player hit. Lives remaining: " + lives);
+    if (lives <= 0) {
+      gameOver = true;
+    } else {
+      // If there are remaining lives, reset the player's position
+      x = width / 2;
+      y = height - 30;
+    }
+  }
+        
   boolean hits(Powerup powerup) {
     float distance = dist(x, y, powerup.x, powerup.y);
     if (distance < size / 2 + powerup.size / 2) {
@@ -184,25 +215,34 @@ class Player {
   }
 
   boolean shieldActive() {
-    return shield != null;
+    return shield != null && shield.active;
   }
   
   boolean shieldCollidesWithEnemy() {
-  for (FireEnemy enemy : fireEnemies) {
-    float distance = dist(x, y, enemy.x, enemy.y);
-    if (distance < shield.getRadius() + enemy.size / 2) {
-      return true;
+    if (shield != null && shield.active) {
+      // Your existing collision logic
+      for (FireEnemy enemy : fireEnemies) {
+        float distance = dist(x, y, enemy.x, enemy.y);
+        if (distance < shield.getRadius() + enemy.size / 2) {
+          // Deactivate the shield after the first collision
+          shield.deactivate();
+          return true;
+        }
+      }
+      
+      for (WaterEnemy enemy : waterEnemies) {
+        float distance = dist(x, y, enemy.x, enemy.y);
+        if (distance < shield.getRadius() + enemy.size / 2) {
+          // Deactivate the shield after the first collision
+          shield.deactivate();
+          return true;
+        }
+      }
+        
+      // Add similar checks for other enemy types if needed
     }
+    return false;
   }
-  for (WaterEnemy enemy : waterEnemies) {
-    float distance = dist(x, y, enemy.x, enemy.y);
-    if (distance < shield.getRadius() + enemy.size / 2) {
-      return true;
-    }
-  }
-  // Add similar checks for other enemy types if needed
-  return false;
-}
 
 
   // Level up interaction

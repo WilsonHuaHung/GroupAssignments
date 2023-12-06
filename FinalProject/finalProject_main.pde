@@ -522,4 +522,3 @@ void reverser(int[] array) {
         array[array.length - 1 - i] = temp;
     }
 }
-
