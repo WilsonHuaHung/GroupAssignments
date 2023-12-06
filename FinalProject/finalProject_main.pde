@@ -14,11 +14,14 @@ PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
 boolean settingsOn = false;
+boolean leaderboardOn = false;
 boolean howTo = false;
 // defaults to medium difficulty
 int fireDifficulty = 90;
 int waterDifficulty = 75;
 int powerDifficulty = 100;
+PFont gameFont;
+PFont font;
 
 
 Buttons[] diffButtons = new Buttons[3];
@@ -26,6 +29,7 @@ Buttons[] audioButtons = new Buttons[5];
 
 void setup() {
   size(400, 400);
+  gameFont = createFont("font.TTF",16);
   gameStarted = false;  // Set the initial state to not started
   player = new Player();
   fireEnemies = new ArrayList<FireEnemy>();
@@ -40,7 +44,7 @@ void setup() {
   backgroundImage = loadImage("backg.png");
 
   // Set a readable font for the score and lives
-  PFont font = createFont("Arial", 16);
+  font = createFont("Arial",16);
   textFont(font);
   
   for (int i = 0; i < diffButtons.length; i++) {
@@ -73,7 +77,10 @@ void draw() {
        for (Buttons b : audioButtons) {
         b.display();}
     }
-      else{
+      else if (leaderboardOn) {
+        settingsOn = false;
+        displayLeaderScreen();}
+      else{     
       displayStartupScreen();
       //  how to play screen
       if (howTo){
@@ -309,7 +316,7 @@ void mousePressed() {
   }
 
   // if settings button is clicked and user is on start screen
-  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
+  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !leaderboardOn) {
     settingsOn = true;}
     
     //updates difficulty based on user selection
@@ -327,16 +334,25 @@ void mousePressed() {
       audioButtons[i].isPressed(mouseX, mouseY);
       if (audioButtons[i].isPressed(mouseX, mouseY) == true){
       audioFile.amp(map(i, 0, 5, 0, 1));}
-    }
-       
+    }       
   // go back to home
-  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
+  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted && settingsOn){
     settingsOn = false;
-    howTo = false;}
+    howTo = false;
+    leaderboardOn = false;}
   
   // how to play screen
   if (mouseX >= 20 && mouseX <= 100 && mouseY >= 330 && mouseY <= 360 && !gameStarted) {
     howTo = !howTo;}
+    
+  //go to leaderboard
+  if (mouseX >= 160 && mouseX <=260 && mouseY >= 20 && mouseY <= 50 && !gameStarted) {
+    leaderboardOn = true;}
+   //go back home
+  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted && leaderboardOn){
+    settingsOn = false;
+    howTo = false;
+    leaderboardOn = false;}
 }
 
 void displayStartupScreen() {
@@ -344,21 +360,25 @@ void displayStartupScreen() {
 
   fill(0);
   textSize(40);
+  textFont(gameFont, 50);
   String titleText = "ELEMENT RUN";
   text(titleText, width / 2 - textWidth(titleText) / 2, height / 2 - 16);
 
   textSize(15);
+  textFont(font);
   String startText = "PRESS ANY KEY TO START ";
   text(startText, width / 2 - textWidth(startText) / 2, height / 2 + 20);
   
-  // settings button, how to play button  
+  // settings button, how to play button, leaderboard,
   fill(255);
   rect(300,330, 75,40);
   rect(20,330,100,30);
-  
+  rect(160,20,100,30);
+ 
   fill(0);
-  text("Settings", 310,355);
+  text("Settings", 305,355);
   text("How to Play", 30,350);
+  text("Leaderboard", 166,40);
   
 }
  void displaySettingsScreen() {
@@ -386,22 +406,23 @@ void displayStartupScreen() {
  
  void displayHowTo() {
    fill(255);
-   rect(50,40,300,280);
+   rect(50,20,300,300);
    textSize(25);
    fill(0);
-   text("How to Play", 140, 80);
+   text("How to Play", 140, 60);
    textSize(15);
-   text("1. Press W, A, S, D to move character ", 70, 110);
-   text("2. Left click to shoot projectile", 70, 130);
-   text("3. Press P to pause the game", 70,150);
-   text("4. Avoid the fire enemies as you will lose", 70, 170);
-   text("a life if you collide with the player", 70, 190);
-   text("5. Water enemies are both your enemy", 70, 210);
-   text("and ally. They make you bigger to make", 70, 230);
-   text("it easier for you to earn power-ups, but", 70, 250);
-   text("also harm you as it is harder to dodge to", 70, 270);
-   text("fire enemies", 70, 290); 
-   text("6. Power Ups _____", 70, 310); 
+   int sizer = 70;
+   text("1. Press W, A, S, D to move character ", 70, sizer+=20);
+   text("2. Left click to shoot projectile", 70, sizer+=20);
+   text("3. Press P to pause the game", 70,sizer+=20);
+   text("4. Avoid the fire enemies as you will lose", 70, sizer+=20);
+   text("a life if you collide with the player", 70, sizer+=20);
+   text("5. Water enemies are both your enemy", 70, sizer+=20);
+   text("and ally. They make you bigger to make", 70, sizer+=20);
+   text("it easier for you to earn power-ups, but", 70, sizer+=20);
+   text("also harm you as it is harder to dodge to", 70, sizer+=20);
+   text("fire enemies", 70, sizer+=20); 
+   text("6. Power Ups _____", 70, sizer+=20); 
  }
 void initializeGame() {
   player = new Player();
@@ -412,6 +433,16 @@ void initializeGame() {
   lives = 3;
   gameOver = false;
 }
+
+void displayLeaderScreen(){
+  background(173, 216, 230);
+  text("Leaderboard goes here",50,50);
+  fill(255);
+  rect(280,350, 110,30);  
+  fill(0);
+  text("Back to Home", 288,370);
+}
+
 
 void displayGameOverScreen() {
   background(0);  // Set the background to black
