@@ -346,7 +346,7 @@ void mousePressed() {
     howTo = !howTo;}
     
   //go to leaderboard
-  if (mouseX >= 160 && mouseX <=260 && mouseY >= 20 && mouseY <= 50 && !gameStarted) {
+  if (mouseX >= 154 && mouseX <=254 && mouseY >= 20 && mouseY <= 50 && !gameStarted) {
     leaderboardOn = true;}
    //go back home
   if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted && leaderboardOn){
@@ -373,12 +373,12 @@ void displayStartupScreen() {
   fill(255);
   rect(300,330, 75,40);
   rect(20,330,100,30);
-  rect(160,20,100,30);
+  rect(154,20,100,30);
  
   fill(0);
-  text("Settings", 305,355);
-  text("How to Play", 30,350);
-  text("Leaderboard", 166,40);
+  text("Settings", 308,355);
+  text("How to Play", 28,350);
+  text("Leaderboard", 160,40);
   
 }
  void displaySettingsScreen() {
@@ -436,7 +436,10 @@ void initializeGame() {
 
 void displayLeaderScreen(){
   background(173, 216, 230);
+  textSize(14);
   text("Leaderboard goes here",50,50);
+  
+  //back to home button
   fill(255);
   rect(280,350, 110,30);  
   fill(0);
