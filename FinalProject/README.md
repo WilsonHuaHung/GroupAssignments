@@ -2,14 +2,14 @@ Assignment 7 Games
 # Element Run Game
 
 ## Overview
-Element Run is a simple 2D game where players control a character to avoid enemies and collect power-ups. The game features a startup screen, gameplay, and a game over screen.
+Element Run is a simple 2D game where players control a character to avoid enemies, gain XP, and level up to gain new skills. The game features a startup screen, gameplay, leaderboard, and a game over screen.
 
 ## Getting Started
 
 ### Installation
 1. Clone the repository:
 How to Play
-The objective of the game is to survive as long as possible, avoiding enemy elements and collecting power-ups. The game has a startup screen where you press any key to start. During gameplay, control the player character using the specified controls. The game ends when the player runs out of lives.
+The objective of the game is to survive as long as possible, avoiding enemy elements and collecting XP. The game has a startup screen where you press any key to start. During gameplay, control the player character using the specified controls. The game ends when the player runs out of lives.
 
 ## Controls
 Movement:
@@ -22,23 +22,23 @@ D or d: Move right
 Player:
 
 The player starts with three lives.
-Colliding with water enemies decrements lives.
-Colliding with fire enemies increments the score.
-Collecting power-ups decrements the score.
+Colliding with fire and water enemies decreases lives.
+Collecting power-ups increases your XP.
+Enemies leaving the screen increase your score.
 
 Enemies:
 
-Water enemies move vertically.
-Fire enemies move horizontally.
+Fire and water enemies move diagonally.
 Enemies disappear when they move off the screen.
 
 Power-ups:
 
 Power-ups appear at regular intervals.
-Collecting power-ups decrements the score.
+Collecting power-ups gives you XP to level up to gain new powers such as a shield and projectiles.
 
 
 ## Author
 Wilson Hua
 Michael Crosson
-Ginger Hudson
+Jessica Yang
+Krishna Brahmaroutu
