@@ -242,7 +242,6 @@ void draw() {
     String returnText = "Click to return to home";
     text(returnText, width / 2 - textWidth(returnText) / 2, height / 2 + 100);
     
-    saveScore();
   } else {
     // Display the game over screen
     displayGameOverScreen();
@@ -295,6 +294,7 @@ void keyPressed() {
 void mousePressed() {
   if (gameOver) {
     // Restart the game
+    saveScore();
     player = new Player();
     fireEnemies.clear();
     waterEnemies.clear();
@@ -369,7 +369,7 @@ void displayStartupScreen() {
   fill(0);
   text("Settings", 310,355);
   text("How to Play", 30,350);
-  text("High Score", 157, 355);
+  text("High Score", 160, 355);
 }
 
  void displaySettingsScreen() {
@@ -479,7 +479,6 @@ void saveScore() {
 }
 
 
-
 void displayLeaderboard() {
     background(173, 216, 230); // Sets the background color
     fill(255);
@@ -506,10 +505,13 @@ void displayLeaderboard() {
     reverser(scores);
 
     fill(0);
-    text("HighScore", 140, 80); // Title for the leaderboard
+    text("Top 5 High Scores", 140, 80); // Title for the leaderboard
     textSize(15);
 
-        text(score, 175, 110);
+    // Display the top five scores
+    for (int i = 0; i < min(scores.length, 5); i++) {
+        text((i + 1) + ". " + scores[i], 70, 110 + 20 * i);
+    }
 }
 
 // Function to reverse the array
@@ -520,3 +522,4 @@ void reverser(int[] array) {
         array[array.length - 1 - i] = temp;
     }
 }
+
