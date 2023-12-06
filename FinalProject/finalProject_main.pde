@@ -14,22 +14,18 @@ PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
 boolean settingsOn = false;
-boolean leaderboardOn = false;
 boolean howTo = false;
+boolean leaderboard = false;
 // defaults to medium difficulty
 int fireDifficulty = 90;
 int waterDifficulty = 75;
 int powerDifficulty = 100;
-PFont gameFont;
-PFont font;
-
 
 Buttons[] diffButtons = new Buttons[3];
 Buttons[] audioButtons = new Buttons[5];
 
 void setup() {
   size(400, 400);
-  gameFont = createFont("font.TTF",16);
   gameStarted = false;  // Set the initial state to not started
   player = new Player();
   fireEnemies = new ArrayList<FireEnemy>();
@@ -44,7 +40,7 @@ void setup() {
   backgroundImage = loadImage("backg.png");
 
   // Set a readable font for the score and lives
-  font = createFont("Arial",16);
+  PFont font = createFont("Arial", 16);
   textFont(font);
   
   for (int i = 0; i < diffButtons.length; i++) {
@@ -77,10 +73,10 @@ void draw() {
        for (Buttons b : audioButtons) {
         b.display();}
     }
-      else if (leaderboardOn) {
-        settingsOn = false;
-        displayLeaderScreen();}
-      else{     
+    if(leaderboard){
+      displayLeaderboard();
+    }
+      else{
       displayStartupScreen();
       //  how to play screen
       if (howTo){
@@ -234,7 +230,6 @@ void draw() {
   } else if (gameOver) {
     // All-black screen when the game is over
     background(0);  // Set the background to black
-
     fill(255);
     textSize(32);
     String gameOverText = "Game Over";
@@ -246,6 +241,8 @@ void draw() {
     
     String returnText = "Click to return to home";
     text(returnText, width / 2 - textWidth(returnText) / 2, height / 2 + 100);
+    
+    saveScore();
   } else {
     // Display the game over screen
     displayGameOverScreen();
@@ -316,7 +313,7 @@ void mousePressed() {
   }
 
   // if settings button is clicked and user is on start screen
-  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !leaderboardOn) {
+  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
     settingsOn = true;}
     
     //updates difficulty based on user selection
@@ -334,25 +331,21 @@ void mousePressed() {
       audioButtons[i].isPressed(mouseX, mouseY);
       if (audioButtons[i].isPressed(mouseX, mouseY) == true){
       audioFile.amp(map(i, 0, 5, 0, 1));}
-    }       
+    }
+       
   // go back to home
-  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted && settingsOn){
+  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
     settingsOn = false;
     howTo = false;
-    leaderboardOn = false;}
+    leaderboard = false;}
   
   // how to play screen
   if (mouseX >= 20 && mouseX <= 100 && mouseY >= 330 && mouseY <= 360 && !gameStarted) {
     howTo = !howTo;}
-    
-  //go to leaderboard
-  if (mouseX >= 154 && mouseX <=254 && mouseY >= 20 && mouseY <= 50 && !gameStarted) {
-    leaderboardOn = true;}
-   //go back home
-  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted && leaderboardOn){
-    settingsOn = false;
-    howTo = false;
-    leaderboardOn = false;}
+  
+  //leaderboard
+  if (mouseX >= 150 && mouseX <= 250 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
+    leaderboard = true;}
 }
 
 void displayStartupScreen() {
@@ -360,27 +353,25 @@ void displayStartupScreen() {
 
   fill(0);
   textSize(40);
-  textFont(gameFont, 50);
   String titleText = "ELEMENT RUN";
   text(titleText, width / 2 - textWidth(titleText) / 2, height / 2 - 16);
 
   textSize(15);
-  textFont(font);
   String startText = "PRESS ANY KEY TO START ";
   text(startText, width / 2 - textWidth(startText) / 2, height / 2 + 20);
   
-  // settings button, how to play button, leaderboard,
+  // settings button, how to play button  
   fill(255);
   rect(300,330, 75,40);
   rect(20,330,100,30);
-  rect(154,20,100,30);
- 
-  fill(0);
-  text("Settings", 308,355);
-  text("How to Play", 28,350);
-  text("Leaderboard", 160,40);
+  rect(150, 330, 100, 40); 
   
+  fill(0);
+  text("Settings", 310,355);
+  text("How to Play", 30,350);
+  text("High Score", 157, 355);
 }
+
  void displaySettingsScreen() {
    background(173, 216, 230);
    //textAlign(CENTER, CENTER);
@@ -406,24 +397,24 @@ void displayStartupScreen() {
  
  void displayHowTo() {
    fill(255);
-   rect(50,20,300,300);
+   rect(50,40,300,280);
    textSize(25);
    fill(0);
-   text("How to Play", 140, 60);
+   text("How to Play", 140, 80);
    textSize(15);
-   int sizer = 70;
-   text("1. Press W, A, S, D to move character ", 70, sizer+=20);
-   text("2. Left click to shoot projectile", 70, sizer+=20);
-   text("3. Press P to pause the game", 70,sizer+=20);
-   text("4. Avoid the fire enemies as you will lose", 70, sizer+=20);
-   text("a life if you collide with the player", 70, sizer+=20);
-   text("5. Water enemies are both your enemy", 70, sizer+=20);
-   text("and ally. They make you bigger to make", 70, sizer+=20);
-   text("it easier for you to earn power-ups, but", 70, sizer+=20);
-   text("also harm you as it is harder to dodge to", 70, sizer+=20);
-   text("fire enemies", 70, sizer+=20); 
-   text("6. Power Ups _____", 70, sizer+=20); 
+   text("1. Press W, A, S, D to move character ", 70, 110);
+   text("2. Left click to shoot projectile", 70, 130);
+   text("3. Press P to pause the game", 70,150);
+   text("4. Avoid the fire enemies as you will lose", 70, 170);
+   text("a life if you collide with the player", 70, 190);
+   text("5. Water enemies are both your enemy", 70, 210);
+   text("and ally. They make you bigger to make", 70, 230);
+   text("it easier for you to earn power-ups, but", 70, 250);
+   text("also harm you as it is harder to dodge to", 70, 270);
+   text("fire enemies", 70, 290); 
+   text("6. Power Ups _____", 70, 310); 
  }
+ 
 void initializeGame() {
   player = new Player();
   fireEnemies = new ArrayList<FireEnemy>();
@@ -433,19 +424,6 @@ void initializeGame() {
   lives = 3;
   gameOver = false;
 }
-
-void displayLeaderScreen(){
-  background(173, 216, 230);
-  textSize(14);
-  text("Leaderboard goes here",50,50);
-  
-  //back to home button
-  fill(255);
-  rect(280,350, 110,30);  
-  fill(0);
-  text("Back to Home", 288,370);
-}
-
 
 void displayGameOverScreen() {
   background(0);  // Set the background to black
@@ -477,4 +455,68 @@ void handleElementSelection(char key) {
     player.selectedElement = "air";
     player.elementSelected = true;
   }
+}
+
+void saveScore() {
+  // Load existing scores from the file
+  String[] existingScores = loadStrings("highscores.txt");
+
+  // Convert the current score to a String (since Processing's saveStrings() requires a String array)
+  String newScore = String.valueOf(score);
+
+  // Check if existingScores is not null. If it's null, initialize an empty array
+  if (existingScores == null) {
+    existingScores = new String[0];
+  }
+
+  // Create a new array to hold existing plus new score
+  String[] allScores = new String[existingScores.length + 1];
+  System.arraycopy(existingScores, 0, allScores, 0, existingScores.length);
+  allScores[existingScores.length] = newScore;
+
+  // Save all scores to the file
+  saveStrings("highscores.txt", allScores);
+}
+
+
+
+void displayLeaderboard() {
+    background(173, 216, 230); // Sets the background color
+    fill(255);
+    stroke(0);
+    rect(280, 350, 110, 30); // Draws a rectangle (button)
+    fill(0);
+    text("Back to Home", 290, 370); // Text for the button
+
+    String[] lines = loadStrings("highscores.txt"); // Loads the high scores from a file
+    int[] scores = new int[lines.length]; // Array to store the scores as integers
+
+    // Convert the String scores to integers
+    for (int i = 0; i < lines.length; i++) {
+        try {
+            scores[i] = Integer.parseInt(lines[i].trim());
+        } catch (NumberFormatException e) {
+            println("Error parsing score: " + lines[i]);
+            scores[i] = 0; // Default to 0 in case of parsing error
+        }
+    }
+
+    // Sort the scores in descending order
+    scores = sort(scores);
+    reverser(scores);
+
+    fill(0);
+    text("HighScore", 140, 80); // Title for the leaderboard
+    textSize(15);
+
+        text(score, 175, 110);
+}
+
+// Function to reverse the array
+void reverser(int[] array) {
+    for (int i = 0; i < array.length / 2; i++) {
+        int temp = array[i];
+        array[i] = array[array.length - 1 - i];
+        array[array.length - 1 - i] = temp;
+    }
 }
