@@ -14,12 +14,15 @@ PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
 boolean settingsOn = false;
+boolean startOn = false;
 boolean howTo = false;
 boolean leaderboard = false;
 // defaults to medium difficulty
 int fireDifficulty = 90;
 int waterDifficulty = 75;
 int powerDifficulty = 100;
+
+
 
 Buttons[] diffButtons = new Buttons[3];
 Buttons[] audioButtons = new Buttons[5];
@@ -72,12 +75,13 @@ void draw() {
         
        for (Buttons b : audioButtons) {
         b.display();}
-    }
-    if(leaderboard){
+        }
+    else if(leaderboard){
       displayLeaderboard();
-    }
-      else{
+      }
+    else{
       displayStartupScreen();
+      startOn = true;
       //  how to play screen
       if (howTo){
           displayHowTo();}
@@ -311,10 +315,11 @@ void mousePressed() {
     // Handle shooting projectiles
     player.shootProjectile();
   }
-
+  
   // if settings button is clicked and user is on start screen
-  if (mouseX >= 300 && mouseX <= 375 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
-    settingsOn = true;}
+  if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !gameStarted && startOn) {
+    settingsOn = true;
+}
     
     //updates difficulty based on user selection
     for (int i = 0; i < diffButtons.length; i++) {
@@ -333,53 +338,64 @@ void mousePressed() {
       audioFile.amp(map(i, 0, 5, 0, 1));}
     }
        
-  // go back to home
-  if (mouseX >= 280 && mouseX <= 390 && mouseY >= 350 && mouseY <= 380 && !gameStarted) {
+  // go back to home from settings
+  if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !startOn) {
     settingsOn = false;
     howTo = false;
-    leaderboard = false;}
-  
+    leaderboard = false;
+    startOn = true;}
+
   // how to play screen
-  if (mouseX >= 20 && mouseX <= 100 && mouseY >= 330 && mouseY <= 360 && !gameStarted) {
+  if (mouseX >= 20 && mouseX <= 120 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !leaderboard) {
     howTo = !howTo;}
   
   //leaderboard
-  if (mouseX >= 150 && mouseX <= 250 && mouseY >= 330 && mouseY <= 370 && !gameStarted) {
+  if (mouseX >= 150 && mouseX <= 250 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !settingsOn) {
     leaderboard = true;}
+    
+    // go back to home from leaderboard
+  if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !gameStarted && leaderboard) {
+    settingsOn = false;
+    howTo = false;
+    leaderboard = false;
+    startOn = true;}
 }
 
 void displayStartupScreen() {
   background(173, 216, 230);  // Set the background to light blue
 
   fill(0);
-  textSize(40);
+  PFont gameFont = createFont("font.TTF", 50);
+  textFont(gameFont);
   String titleText = "ELEMENT RUN";
   text(titleText, width / 2 - textWidth(titleText) / 2, height / 2 - 16);
-
+  PFont font = createFont("Arial", 16);
+  textFont(font);
+  
   textSize(15);
   String startText = "PRESS ANY KEY TO START ";
   text(startText, width / 2 - textWidth(startText) / 2, height / 2 + 20);
   
-  // settings button, how to play button  
+  // settings button, how to play, high score button  
   fill(255);
-  rect(300,330, 75,40);
-  rect(20,330,100,30);
+  rect(280,330,100,40);
+  rect(20,330,100,40);
   rect(150, 330, 100, 40); 
   
   fill(0);
-  text("Settings", 310,355);
-  text("How to Play", 30,350);
-  text("High Score", 160, 355);
+  text("Settings", 305,355);
+  text("How to Play", 30,355);
+  text("High Score", width / 2 - textWidth("High Score") / 2, 355);
 }
 
  void displaySettingsScreen() {
    background(173, 216, 230);
-   //textAlign(CENTER, CENTER);
-  fill(255);
-  stroke(0);
-  rect(280,350, 110,30);  
-  fill(0);
-  text("Back to Home", 290,370);
+    //back to home button
+    fill(255);
+    stroke(0);
+    rect(280,330, 100,40);  
+    fill(0);
+    text("Back to Home", 285,355);
    
    fill(0);
    textSize(30);
@@ -483,9 +499,9 @@ void displayLeaderboard() {
     background(173, 216, 230); // Sets the background color
     fill(255);
     stroke(0);
-    rect(280, 350, 110, 30); // Draws a rectangle (button)
+    rect(280,330, 100,40);   // Draws a rectangle (button)
     fill(0);
-    text("Back to Home", 290, 370); // Text for the button
+    text("Back to Home", 285, 355); // Text for the button
 
     String[] lines = loadStrings("highscores.txt"); // Loads the high scores from a file
     int[] scores = new int[lines.length]; // Array to store the scores as integers
