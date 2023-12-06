@@ -220,7 +220,6 @@ class Player {
  
   boolean shieldCollidesWithEnemy() {
     if (shield != null && shield.active == false) {
-      // Your existing collision logic
       for (FireEnemy enemy : fireEnemies) {
         float distance = dist(x, y, enemy.x, enemy.y);
         if (distance < shield.getRadius() + enemy.size / 2) {
@@ -248,7 +247,7 @@ class Player {
   void levelUp() {
     level++;
 
-    // Pause the game (you might want to add a variable to control the game state)
+    // Pause the game 
     gamePaused = true;
 
     // Show level up message
