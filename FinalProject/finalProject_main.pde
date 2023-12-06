@@ -222,7 +222,7 @@ void draw() {
       for (Projectile projectile : player.projectiles) {
         projectile.display();
       }
-    } else if (player.level == 3) {
+    } else if (player.level > 3) {
       // Display shield animation
       player.displayShield();
     }

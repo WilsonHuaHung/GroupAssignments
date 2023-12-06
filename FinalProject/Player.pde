@@ -47,11 +47,7 @@ class Player {
   void update() {
     playerAnimation.update();
     // Check for level up
-    if (powerupCount >= 200 && player.level == 1) {
-      player.levelUp();
-    } else if (powerupCount >= 400 && player.level == 2) {
-      player.levelUp();
-    } else if (powerupCount >= 600 && player.level == 3) {
+    if (powerupCount >= 200 && (level * 200) <= powerupCount) {
       player.levelUp();
     }
 
@@ -97,7 +93,7 @@ class Player {
     fill(0, 100, 100);
     
     // Display shield animation at level 3
-    if (level == 3) {
+    if (level >= 3) {
       if (shield == null) {
         shield = new Shield(x, y, size, selectedElement);
       }
@@ -261,8 +257,6 @@ class Player {
     String levelUpText = "Level Up!";
     text(levelUpText, width / 2 - textWidth(levelUpText) / 2, height / 2 - 16);
 
-    // ... Additional logic for level up message
-
     // Display element selection menu
     displayElementSelectionMenu();
 
@@ -271,7 +265,7 @@ class Player {
 
     inElementSelection = true;
     
-    if (level == 3) {
+    if (level >= 3) {
         shield = new Shield(x, y, size, selectedElement);
     } else {
         shield = null; // Ensure the shield is set to null when not at level 3
