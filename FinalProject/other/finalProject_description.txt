@@ -45,7 +45,7 @@ Michael Crosson implemented the leaderboard functionality that saves to a .txt f
 
 Jessica Yang
 
-Krishna Brahmaroutu
+Krishna Brahmaroutu handled the sprite animations by searching the web for Avatar themed sprites. Shoutout to http://musogato.com/avatar/sprites for an amazing selection. Updates were made to the player, animation, fire enemy, water enemy, power up and main sketch files. The functionality with the interactions between all characters was built upon the foundation by Wilson.
 
 
 
