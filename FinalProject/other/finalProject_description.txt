@@ -1,45 +1,55 @@
-# Assignment 7 - Element Run Game
+**Project Description: Final Project
 
-## Group Members
-
-- Ginger Hudson
-Worked on the loading game screen, lives counter, background and text visuals and the game over screen. 
-Enhanced the game's visual display and create a user-friendly GUI
-
-- Michael Crosson
-Implemented additional game features (e.g., power-ups or special abilities).
-
+**Group Members:
 - Wilson Hua
-Implemented Water and Wind enemies and collision mechanics
-## Project Description
+[Team Member 2 Name]
+[Team Member 3 Name]
+[Team Member 4 Name]
 
-### Game Functionality
-The game loads with a starting screen that by pressing any button the game will load. Once loaded, your player starts and you have three lives to play before the game is over.
+**Overview:
+Our final project is a 2D game implemented in Java using the Processing framework. The game involves a player leveling up levels, shooting projectiles, and using shields to defend against enemies.
 
-### Rules of Play
-Players control the character by using the
-Movement: 
-W or w: Move up 
-A or a: Move left 
-S or s: Move down 
-D or d: Move right
+**Functionalities and Implementations:
 
-If you collide with a water enemy your player will increase in size. If you collide with an green triangle powerup your player will decrease in size but regain more powerups. If you collide with a fire enemy you will lose one live. You can collect power-ups by surviving as long as possible and interacting with the powerups with points earned for avoiding enemies.
+**Player Class:
+The Player class handles the player's movement, shooting projectiles, leveling up, and collisions with enemies and powerups.
 
-### Win and Lose Conditions
+Player animation is implemented using a sprite sheet and the Processing Animation class.
+The player can select an elemental power (fire, water, earth, air) at level 2, influencing projectile behavior.
 
-Players win by surviving as long as possible and accumulating the highest score. Losing occurs when the player runs out of lives from colliding with fire enemies.
+**Projectile Classes:
+Multiple projectile classes (FireProjectile, WaterProjectile, EarthProjectile, AirProjectile) handle different elemental projectiles with unique cooldowns.
 
-## Classes
-Enemy: updates and displays the enemies
-FireEnemy: creates the red randomized circles on screen 
-WaterEnemy: creates the blue randomized circles on screen.
-Powerup: create the green triangle to collid with for powerup points
+**Shield Class:
+The Shield class provides the player with a protective shield at level 3 and upwards
 
-Player: creates the player for game play 
-### Unexpected Challenges
+The shield deactivates upon collisions with enemies, and the player loses no lives during this period.
 
-There was challenges encounted in fine-tuning the collision detection and ensuring smooth enemy generation. Debugging and refining the movement of enemies were crucial to enhancing the overall gaming experience.
-In addition, the lives counter that worked in hadn with collision detection to determine when the game ended.
+**Enemy Classes:
+FireEnemy and WaterEnemy classes represent different enemy types with distinct behaviors and appearances.
+Enemies move across the screen, and collisions with the player result in life deduction.
+
+**Powerup Class:
+The Powerup class represents collectible items that, when obtained, contribute to the player's powerup count.
+
+**Challenges Faced:
+- Sprite Animation | Integrating sprite animations for the player required understanding the Processing Animation class and synchronizing it with player actions.
+- Collision Handling | Ensuring proper collision detection between projectiles, enemies, and shields without unexpected behavior or glitches was a challenging aspect. The additional layer with the shield being activated and deactivated cause great troubleshooting. 
+
+**Individual Contributions:
+Each group member took responsibility for specific aspects of the project to ensure active participation and mastery of assigned tasks.
+
+Wilson Hua handled the implementation of the player class, including movement, leveling up, shield functionality, selecting element type, shield interaction, collision with fire and water enemies, powerup interaction, shooting projectiles, fire enemies and water enemies, scoring and lives, and README and description text files.
+
+[Team Member 2 Name] 
+
+[Team Member 3 Name] 
+
+[Team Member 4 Name] 
 
 
+
+**Conclusion:
+Our final project successfully implements a dynamic and engaging 2D game with distinct player abilities, enemies, and leveling mechanics. Each group member contributed to different components, fostering a collaborative and educational development process.
+
+Note: Replace [Your Name], [Team Member 2 Name], and [Team Member 3 Name] with the actual names of your group members.
