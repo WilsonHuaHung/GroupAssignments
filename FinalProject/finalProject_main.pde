@@ -421,14 +421,11 @@ void displayStartupScreen() {
    text("1. Press W, A, S, D to move character ", 70, 110);
    text("2. Left click to shoot projectile", 70, 130);
    text("3. Press P to pause the game", 70,150);
-   text("4. Avoid the fire enemies as you will lose", 70, 170);
-   text("a life if you collide with the player", 70, 190);
-   text("5. Water enemies are both your enemy", 70, 210);
-   text("and ally. They make you bigger to make", 70, 230);
-   text("it easier for you to earn power-ups, but", 70, 250);
-   text("also harm you as it is harder to dodge to", 70, 270);
-   text("fire enemies", 70, 290); 
-   text("6. Power Ups _____", 70, 310); 
+   text("4. Avoid the fire and water enemies! You will ", 70, 170);
+   text("lose a life if you collide with the player", 70, 190);
+   text("5. Collect XP to level up and get skills", 70, 210);
+   text("6. At level 1, mouse click to shoot", 70, 230);
+   text("7. At level 2 you gain a shield", 70, 250);
  }
  
 void initializeGame() {
