@@ -43,7 +43,7 @@ Wilson Hua handled the implementation of the player class, including movement, l
 
 Michael Crosson implemented the leaderboard functionality that saves to a .txt file as well as implementing the XP and leveling system. He integrated the functionality Wilson coded for shields and projectiles into this. 
 
-Jessica Yang implemented the underlying GUI system, with multiple screens including "How to Play", "Settings", "High Scores." This included the use of radio buttons to adjust difficulty and and volume levels for the user to control.
+Jessica Yang implemented the underlying GUI system, with multiple screens and functionalities including "How to Play" and "Settings". This included the use of radio buttons to adjust difficulty and volume levels for the user to control. She helped implement the basic button function behind the leaderboard for Michael to build on and add logic.
 
 Krishna Brahmaroutu handled the sprite animations by searching the web for Avatar themed sprites. Shoutout to http://musogato.com/avatar/sprites for an amazing selection. Updates were made to the player, animation, fire enemy, water enemy, power up and main sketch files. The functionality with the interactions between all characters was built upon the foundation by Wilson.
 
