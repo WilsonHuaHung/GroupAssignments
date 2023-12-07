@@ -70,6 +70,7 @@ void draw() {
     // Display the startup screen
     if (startOn){
       displayStartupScreen();
+      leaderboard = false;
       //  how to play screen
       if (howTo){
           displayHowTo();}}
