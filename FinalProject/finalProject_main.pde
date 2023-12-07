@@ -14,7 +14,7 @@ PImage backgroundImage;
 boolean gamePaused = false;
 boolean inElementSelection = false;
 boolean settingsOn = false;
-boolean startOn = false;
+boolean startOn = true;
 boolean howTo = false;
 boolean leaderboard = false;
 // defaults to medium difficulty
@@ -68,7 +68,13 @@ void setup() {
 void draw() {
   if (!gameStarted) {
     // Display the startup screen
-    if (settingsOn){
+    if (startOn){
+      displayStartupScreen();
+      //  how to play screen
+      if (howTo){
+          displayHowTo();}}
+     // settings screen     
+    else if (settingsOn){
       displaySettingsScreen();
         for (Buttons b : diffButtons) {
         b.display();}
@@ -76,17 +82,11 @@ void draw() {
        for (Buttons b : audioButtons) {
         b.display();}
         }
+    // leaderboard screen    
     else if(leaderboard){
       displayLeaderboard();
       }
-    else{
-      displayStartupScreen();
-      startOn = true;
-      //  how to play screen
-      if (howTo){
-          displayHowTo();}
-  }
-    
+      
   } else if (!gameOver && !gamePaused) {
     // Display the game screen
     image(backgroundImage, 0, 0, width, height);
@@ -319,6 +319,7 @@ void mousePressed() {
   // if settings button is clicked and user is on start screen
   if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !gameStarted && startOn) {
     settingsOn = true;
+    startOn = false;
 }
     
     //updates difficulty based on user selection
@@ -338,20 +339,23 @@ void mousePressed() {
       audioFile.amp(map(i, 0, 5, 0, 1));}
     }
        
-  // go back to home from settings
-  if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !startOn) {
+  // go back to home from settings 
+  if (mouseX >= 155 && mouseX <= 255 && mouseY >= 330 && mouseY <= 370 && !gameStarted && settingsOn) {
     settingsOn = false;
     howTo = false;
-    leaderboard = false;
-    startOn = true;}
+    leaderboard = true;
+    startOn = true;
+  }
 
   // how to play screen
-  if (mouseX >= 20 && mouseX <= 120 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !leaderboard) {
-    howTo = !howTo;}
-  
+  if (mouseX >= 20 && mouseX <= 120 && mouseY >= 330 && mouseY <= 370 && !gameStarted && startOn) {
+    howTo = !howTo;
+    leaderboard = false;}
+    
   //leaderboard
-  if (mouseX >= 150 && mouseX <= 250 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !settingsOn) {
-    leaderboard = true;}
+  if (mouseX >= 150 && mouseX <= 250 && mouseY >= 330 && mouseY <= 370 && !gameStarted && !settingsOn && !leaderboard) {
+    leaderboard = true;
+    startOn = false;}
     
     // go back to home from leaderboard
   if (mouseX >= 280 && mouseX <= 380 && mouseY >= 330 && mouseY <= 370 && !gameStarted && leaderboard) {
@@ -393,9 +397,9 @@ void displayStartupScreen() {
     //back to home button
     fill(255);
     stroke(0);
-    rect(280,330, 100,40);  
+    rect(width / 2 - textWidth("Back to Home") / 2,330,100,40);
     fill(0);
-    text("Back to Home", 285,355);
+    text("Back to Home", 155,355);
    
    fill(0);
    textSize(30);
@@ -418,14 +422,16 @@ void displayStartupScreen() {
    fill(0);
    text("How to Play", 140, 80);
    textSize(15);
-   text("1. Press W, A, S, D to move character ", 70, 110);
-   text("2. Left click to shoot projectile", 70, 130);
-   text("3. Press P to pause the game", 70,150);
-   text("4. Avoid the fire and water enemies! You will ", 70, 170);
-   text("lose a life if you collide with the player", 70, 190);
-   text("5. Collect XP to level up and get skills", 70, 210);
-   text("6. At level 1, mouse click to shoot", 70, 230);
-   text("7. At level 2 you gain a shield", 70, 250);
+   int sizer = 90;
+   text("1. Press W, A, S, D to move character ", 70, sizer += 20);
+   text("2. Left click to shoot projectile", 70, sizer += 20);
+   text("3. Press P to pause the game", 70,sizer += 20);
+   text("4. Avoid the fire and water enemies! You", 70, sizer += 20);
+   text("will lose a life if you collide with", 70, sizer += 20);
+   text("the player", 70, sizer += 20);
+   text("5. Collect XP to level up and get skills", 70, sizer += 20);
+   text("6. At level 1, mouse click to shoot", 70, sizer += 20);
+   text("7. At level 2, you gain a shield", 70, sizer += 20);
  }
  
 void initializeGame() {
