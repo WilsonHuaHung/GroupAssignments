@@ -1,13 +1,13 @@
 **Project Description: Final Project
 
 **Group Members:
-- Wilson Hua
-[Team Member 2 Name]
-[Team Member 3 Name]
-[Team Member 4 Name]
+Wilson Hua
+Michael Crosson
+Jessica Yang
+Krishna Brahmaroutu
 
 **Overview:
-Our final project is a 2D game implemented in Java using the Processing framework. The game involves a player leveling up levels, shooting projectiles, and using shields to defend against enemies.
+Our final project is a 2D game implemented in Java using the Processing framework. The game involves a player leveling up by collecting XP, shooting projectiles, and using shields to avoid or defend against enemies.
 
 **Functionalities and Implementations:
 
@@ -41,15 +41,13 @@ Each group member took responsibility for specific aspects of the project to ens
 
 Wilson Hua handled the implementation of the player class, including movement, leveling up, shield functionality, selecting element type, shield interaction, collision with fire and water enemies, powerup interaction, shooting projectiles, fire enemies and water enemies, scoring and lives, and README and description text files.
 
-[Team Member 2 Name] 
+Michael Crosson implemented the leaderboard functionality that saves to a .txt file as well as implementing the XP and leveling system. He integrated the functionality Wilson coded for shields and projectiles into this. 
 
-[Team Member 3 Name] 
+Jessica Yang
 
-[Team Member 4 Name] 
+Krishna Brahmaroutu
 
 
 
 **Conclusion:
 Our final project successfully implements a dynamic and engaging 2D game with distinct player abilities, enemies, and leveling mechanics. Each group member contributed to different components, fostering a collaborative and educational development process.
-
-Note: Replace [Your Name], [Team Member 2 Name], and [Team Member 3 Name] with the actual names of your group members.
